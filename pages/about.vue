@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- ヒーローセクション -->
-    <section class="bg-blue-900 text-white py-20">
+    <section class="bg-blue-900 text-white py-16 relative">
       <div class="container mx-auto px-4">
         <div class="max-w-3xl mx-auto text-center">
           <h1 class="text-4xl font-bold mb-6">コミュニティについて</h1>
@@ -10,10 +10,15 @@
           </p>
         </div>
       </div>
+      
+      <!-- 波形トランジション -->
+      <div class="absolute bottom-0 left-0 w-full">
+        <SectionTransition color="#ffffff" />
+      </div>
     </section>
 
     <!-- ミッションセクション -->
-    <section class="py-20 bg-white">
+    <section class="py-16 bg-white relative">
       <div class="container mx-auto px-4">
         <div class="max-w-3xl mx-auto">
           <h2 class="text-3xl font-bold mb-8 text-center">私たちのミッション</h2>
@@ -34,14 +39,19 @@
           </div>
         </div>
       </div>
+      
+      <!-- 波形トランジション -->
+      <div class="absolute bottom-0 left-0 w-full">
+        <SectionTransition color="#f9fafb" />
+      </div>
     </section>
 
     <!-- 活動内容詳細 -->
-    <section class="py-20 bg-gray-50">
+    <section class="py-16 bg-gray-50 relative">
       <div class="container mx-auto px-4">
         <h2 class="text-3xl font-bold mb-12 text-center">主な活動内容</h2>
-        <div class="max-w-4xl mx-auto space-y-12">
-          <div class="bg-white p-8 rounded-xl shadow-sm">
+        <div class="max-w-4xl mx-auto space-y-8">
+          <div class="bg-white p-6 md:p-8 rounded-xl shadow-sm">
             <h3 class="text-2xl font-bold mb-4">定期的なXスペーストーク</h3>
             <p class="text-gray-600 mb-6">
               毎週火・木・金曜日に開催されるXスペースでは、以下のような
@@ -56,7 +66,7 @@
             </ul>
           </div>
 
-          <div class="bg-white p-8 rounded-xl shadow-sm">
+          <div class="bg-white p-6 md:p-8 rounded-xl shadow-sm">
             <h3 class="text-2xl font-bold mb-4">Discordコミュニティ</h3>
             <p class="text-gray-600 mb-6">
               Discordサーバーでは、以下のような活動を行っています：
@@ -69,7 +79,7 @@
             </ul>
           </div>
 
-          <div class="bg-white p-8 rounded-xl shadow-sm">
+          <div class="bg-white p-6 md:p-8 rounded-xl shadow-sm">
             <h3 class="text-2xl font-bold mb-4">コミュニティトークン「Pizza」</h3>
             <p class="text-gray-600 mb-6">
               TIPWAVEプラットフォームを利用して発行された独自のコミュニティトークン
@@ -83,14 +93,19 @@
           </div>
         </div>
       </div>
+      
+      <!-- 波形トランジション -->
+      <div class="absolute bottom-0 left-0 w-full">
+        <SectionTransition color="#ffffff" />
+      </div>
     </section>
 
     <!-- 参加方法 -->
-    <section class="py-20 bg-white">
+    <section class="py-16 bg-white">
       <div class="container mx-auto px-4">
         <h2 class="text-3xl font-bold mb-12 text-center">参加方法</h2>
         <div class="max-w-4xl mx-auto grid md:grid-cols-2 gap-8">
-          <div class="bg-gray-50 p-8 rounded-xl">
+          <div class="bg-gray-50 p-6 md:p-8 rounded-xl">
             <h3 class="text-2xl font-bold mb-4">1. Discordに参加</h3>
             <p class="text-gray-600 mb-6">
               まずは、Discordサーバーに参加しましょう。
@@ -104,7 +119,7 @@
               Discordに参加する
             </a>
           </div>
-          <div class="bg-gray-50 p-8 rounded-xl">
+          <div class="bg-gray-50 p-6 md:p-8 rounded-xl">
             <h3 class="text-2xl font-bold mb-4">2. Xをフォロー</h3>
             <p class="text-gray-600 mb-6">
               公式Xアカウントをフォローして、
@@ -125,6 +140,8 @@
 </template>
 
 <script setup>
+import SectionTransition from '~/components/SectionTransition.vue'
+
 useHead({
   title: 'Web3学生トーク - コミュニティについて'
 })

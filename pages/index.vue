@@ -1,18 +1,18 @@
 <template>
   <div>
     <!-- ヒーローセクション -->
-    <section class="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-blue-50 to-white">
+    <section class="relative h-screen flex items-center justify-start overflow-hidden bg-gradient-to-br from-blue-50 to-white">
       <HeroBackground />
+      
       <div class="container mx-auto px-4 z-10">
-        <div class="max-w-4xl mx-auto text-center">
-          <h1 class="text-5xl md:text-7xl font-bold mb-8 text-gray-900 leading-tight animate-fade-in">
-            Web3の未来を
-            <span class="bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-purple-600">語ろう</span>
+        <div class="max-w-3xl mt-[-100px]">
+          <h1 class="text-5xl md:text-7xl font-bold mb-4 text-gray-900 leading-tight">
+            Web3の未来を <span class="text-blue-600">語</span><span class="text-purple-600">ろ</span><span class="text-indigo-600">う</span>
           </h1>
-          <p class="text-xl md:text-2xl mb-12 text-gray-600 animate-fade-in-delay">
+          <p class="text-xl mb-8 text-gray-700">
             Web3やメタバースについて、気軽に話せるコミュニティ
           </p>
-          <div class="flex flex-col sm:flex-row gap-6 justify-center animate-fade-in-delay-2">
+          <div class="flex flex-col sm:flex-row gap-4">
             <a href="https://discord.com/invite/BbxuwH5WS3" 
               target="_blank"
               rel="noopener noreferrer"
@@ -31,10 +31,70 @@
           </div>
         </div>
       </div>
+      
+      <!-- 青いセクションへの波形トランジション -->
+      <div class="absolute bottom-0 left-0 w-full">
+        <SectionTransition color="#1e3a8a" />
+      </div>
+    </section>
+
+    <!-- 特徴セクション (青背景部分) -->
+    <section class="py-20 bg-blue-900 text-white relative">
+      <div class="container mx-auto px-4">
+        <div class="max-w-5xl mx-auto">
+          <div class="grid md:grid-cols-2 gap-16 items-center">
+            <div>
+              <h3 class="text-3xl font-bold mb-6">私たちの信念</h3>
+              <p class="text-xl mb-8">
+                『未来を創る』を共有できるコミュニティを目指して、Web3技術の可能性を探求しています。
+              </p>
+              <p class="text-lg text-blue-200">
+                ブロックチェーン技術を通じて、新しい価値と仕組みを生み出していく。
+                それが私たちの目標です。
+              </p>
+            </div>
+            <div>
+              <div class="bg-white/10 backdrop-blur-lg p-8 rounded-xl">
+                <h3 class="text-2xl font-bold mb-6 flex items-center">
+                  <i class="fas fa-bullhorn mr-3"></i>
+                  お知らせ
+                </h3>
+                <ul class="space-y-4">
+                  <li class="border-b border-white/20 pb-3">
+                    <span class="text-blue-200 block">24/12/26</span>
+                    <span>年末年始休業のお知らせ</span>
+                  </li>
+                  <li class="border-b border-white/20 pb-3">
+                    <span class="text-blue-200 block">25/1/1</span>
+                    <span>新年のご挨拶</span>
+                  </li>
+                  <li>
+                    <span class="text-blue-200 block">24/11/26</span>
+                    <span>ウェブサイトリニューアルのお知らせ</span>
+                  </li>
+                </ul>
+                <div class="mt-6">
+                  <NuxtLink 
+                    to="/news"
+                    class="inline-block px-4 py-2 rounded-lg border border-white/30 hover:bg-white/10 transition-all"
+                  >
+                    すべてのお知らせを見る <i class="fas fa-arrow-right ml-2"></i>
+                  </NuxtLink>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- 白いセクションへの波形トランジション -->
+      <div class="absolute bottom-0 left-0 w-full">
+        <SectionTransition color="#ffffff" />
+      </div>
     </section>
 
     <!-- 特徴セクション -->
-    <section class="py-20 bg-white">
+    <section class="py-20 bg-white relative">
       <div class="container mx-auto px-4">
         <h2 class="text-3xl font-bold text-center mb-12 text-gray-900">コミュニティの特徴</h2>
         <div class="grid md:grid-cols-3 gap-8">
@@ -67,13 +127,18 @@
           </div>
         </div>
       </div>
+      
+      <!-- グレーセクションへの波形トランジション -->
+      <div class="absolute bottom-0 left-0 w-full">
+        <SectionTransition color="#f9fafb" />
+      </div>
     </section>
 
     <!-- 活動内容セクション -->
-    <section class="py-20 bg-gray-50">
+    <section class="py-20 bg-gray-50 relative">
       <div class="container mx-auto px-4">
         <h2 class="text-3xl font-bold text-center mb-12">活動内容</h2>
-        <div class="max-w-3xl mx-auto space-y-8">
+        <div class="max-w-4xl mx-auto space-y-8">
           <div class="card">
             <h3 class="text-xl font-bold mb-3 flex items-center">
               <i class="fas fa-microphone text-blue-600 mr-3"></i>
@@ -105,6 +170,11 @@
             </p>
           </div>
         </div>
+      </div>
+      
+      <!-- 白いセクションへの波形トランジション -->
+      <div class="absolute bottom-0 left-0 w-full">
+        <SectionTransition color="#ffffff" />
       </div>
     </section>
 
@@ -139,6 +209,8 @@
 </template>
 
 <script setup>
+import SectionTransition from '~/components/SectionTransition.vue'
+
 useHead({
   title: 'Web3学生トーク - ホーム'
 })

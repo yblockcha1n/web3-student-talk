@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- ヒーローセクション -->
-    <section class="bg-blue-900 text-white py-20">
+    <section class="bg-blue-900 text-white py-16 relative">
       <div class="container mx-auto px-4">
         <div class="max-w-3xl mx-auto text-center">
           <h1 class="text-4xl font-bold mb-6">お問い合わせ</h1>
@@ -10,10 +10,15 @@
           </p>
         </div>
       </div>
+      
+      <!-- 波形トランジション -->
+      <div class="absolute bottom-0 left-0 w-full">
+        <SectionTransition color="#ffffff" />
+      </div>
     </section>
 
     <!-- コンタクトセクション -->
-    <section class="py-20 bg-white">
+    <section class="py-16 bg-white">
       <div class="container mx-auto px-4">
         <div class="max-w-2xl mx-auto">
           <div class="bg-gray-50 p-8 rounded-xl mb-12">
@@ -97,6 +102,8 @@
 </template>
 
 <script setup>
+import SectionTransition from '~/components/SectionTransition.vue'
+
 useHead({
   title: 'Web3学生トーク - お問い合わせ'
 })
