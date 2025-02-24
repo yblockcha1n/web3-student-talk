@@ -9,7 +9,7 @@
   }
 
   ::selection {
-    @apply bg-blue-500 text-white;
+    @apply bg-[#5de8e8] text-white;
   }
 }
 
@@ -44,7 +44,7 @@
   }
 
   .btn-primary {
-    @apply bg-blue-600 text-white hover:bg-blue-700 transform hover:-translate-y-1;
+    @apply bg-[#5de8e8] text-gray-800 hover:bg-[#4ad0d0] transform hover:-translate-y-1;
   }
 
   .btn-outline {

@@ -1,17 +1,26 @@
 <template>
   <div>
     <!-- ヒーローセクション -->
-    <section class="relative h-screen flex items-center justify-start overflow-hidden bg-gradient-to-br from-blue-50 to-white">
+    <section class="relative h-screen flex items-center justify-start overflow-hidden bg-gradient-to-br from-gray-50 to-white">
       <HeroBackground />
       
       <div class="container mx-auto px-4 z-10">
         <div class="max-w-3xl mt-[-100px]">
-          <h1 class="text-5xl md:text-7xl font-bold mb-4 text-gray-900 leading-tight">
-            Web3の未来を <span class="text-blue-600">語</span><span class="text-purple-600">ろ</span><span class="text-indigo-600">う</span>
-          </h1>
-          <p class="text-xl mb-8 text-gray-700">
+          <!-- タイトル部分 - レイアウト固定 -->
+          <div class="flex flex-col">
+            <div class="text-5xl md:text-7xl font-bold mb-4 text-gray-900">Web3の</div>
+            <div class="h-16 md:h-20 relative">
+              <div class="absolute inset-0 flex items-center">
+                <span class="text-5xl md:text-7xl font-bold text-[#5de8e8] typewriter-text">{{ displayText }}</span>
+                <span class="text-5xl md:text-7xl font-bold cursor-blink ml-1">|</span>
+              </div>
+            </div>
+          </div>
+          
+          <p class="text-xl mb-8 text-gray-700 mt-4">
             Web3やメタバースについて、気軽に話せるコミュニティ
           </p>
+          
           <div class="flex flex-col sm:flex-row gap-4">
             <a href="https://discord.com/invite/BbxuwH5WS3" 
               target="_blank"
@@ -99,7 +108,7 @@
         <h2 class="text-3xl font-bold text-center mb-12 text-gray-900">コミュニティの特徴</h2>
         <div class="grid md:grid-cols-3 gap-8">
           <div class="card hover:scale-105">
-            <div class="w-12 h-12 bg-blue-100 text-blue-600 rounded-lg flex items-center justify-center mb-4">
+            <div class="w-12 h-12 bg-[#eafcfc] text-[#5de8e8] rounded-lg flex items-center justify-center mb-4">
               <i class="fas fa-comments text-xl"></i>
             </div>
             <h3 class="text-xl font-bold mb-3 text-gray-900">定期的な交流</h3>
@@ -108,7 +117,7 @@
             </p>
           </div>
           <div class="card hover:scale-105">
-            <div class="w-12 h-12 bg-blue-100 text-blue-600 rounded-lg flex items-center justify-center mb-4">
+            <div class="w-12 h-12 bg-[#eafcfc] text-[#5de8e8] rounded-lg flex items-center justify-center mb-4">
               <i class="fas fa-users text-xl"></i>
             </div>
             <h3 class="text-xl font-bold mb-3 text-gray-900">オープンなコミュニティ</h3>
@@ -117,7 +126,7 @@
             </p>
           </div>
           <div class="card hover:scale-105">
-            <div class="w-12 h-12 bg-blue-100 text-blue-600 rounded-lg flex items-center justify-center mb-4">
+            <div class="w-12 h-12 bg-[#eafcfc] text-[#5de8e8] rounded-lg flex items-center justify-center mb-4">
               <i class="fas fa-pizza-slice text-xl"></i>
             </div>
             <h3 class="text-xl font-bold mb-3 text-gray-900">コミュニティトークン</h3>
@@ -138,36 +147,60 @@
     <section class="py-20 bg-gray-50 relative">
       <div class="container mx-auto px-4">
         <h2 class="text-3xl font-bold text-center mb-12">活動内容</h2>
-        <div class="max-w-4xl mx-auto space-y-8">
-          <div class="card">
-            <h3 class="text-xl font-bold mb-3 flex items-center">
-              <i class="fas fa-microphone text-blue-600 mr-3"></i>
-              Xスペーストーク
-            </h3>
-            <p class="text-gray-600">
-              定期的なXスペースでの交流会を開催。Web3に関する様々なトピックについて、
-              自由に意見交換ができる場を提供しています。
-            </p>
+        <div class="grid lg:grid-cols-5 gap-8">
+          <!-- 左側：活動内容カード（3カラム→2カラム） -->
+          <div class="lg:col-span-3 space-y-8">
+            <div class="card">
+              <h3 class="text-xl font-bold mb-3 flex items-center">
+                <i class="fas fa-microphone text-[#5de8e8] mr-3"></i>
+                Xスペーストーク
+              </h3>
+              <p class="text-gray-600">
+                定期的なXスペースでの交流会を開催。Web3に関する様々なトピックについて、
+                自由に意見交換ができる場を提供しています。
+              </p>
+            </div>
+            <div class="card">
+              <h3 class="text-xl font-bold mb-3 flex items-center">
+                <i class="fab fa-discord text-[#5de8e8] mr-3"></i>
+                Discordコミュニティ
+              </h3>
+              <p class="text-gray-600">
+                Discordサーバーでは、日常的な交流や情報共有が活発に行われています。
+                初心者の方でも気軽に質問できる環境を整えています。
+              </p>
+            </div>
+            <div class="card">
+              <h3 class="text-xl font-bold mb-3 flex items-center">
+                <i class="fas fa-book text-[#5de8e8] mr-3"></i>
+                Web3用語集（準備中）
+              </h3>
+              <p class="text-gray-600">
+                Web3の基礎知識や用語をわかりやすく解説する用語集を作成中。
+                初心者の方の学習をサポートします。
+              </p>
+            </div>
           </div>
-          <div class="card">
-            <h3 class="text-xl font-bold mb-3 flex items-center">
-              <i class="fab fa-discord text-blue-600 mr-3"></i>
-              Discordコミュニティ
-            </h3>
-            <p class="text-gray-600">
-              Discordサーバーでは、日常的な交流や情報共有が活発に行われています。
-              初心者の方でも気軽に質問できる環境を整えています。
-            </p>
-          </div>
-          <div class="card">
-            <h3 class="text-xl font-bold mb-3 flex items-center">
-              <i class="fas fa-book text-blue-600 mr-3"></i>
-              Web3用語集（準備中）
-            </h3>
-            <p class="text-gray-600">
-              Web3の基礎知識や用語をわかりやすく解説する用語集を作成中。
-              初心者の方の学習をサポートします。
-            </p>
+          
+          <!-- 右側：Twitter埋め込み（モバイルでは非表示） -->
+          <div class="lg:col-span-2 hidden lg:block">
+            <div class="card h-full overflow-hidden">
+              <h3 class="text-xl font-bold mb-4 flex items-center">
+                <i class="fab fa-twitter text-[#5de8e8] mr-3"></i>
+                最新のツイート
+              </h3>
+              <div class="twitter-embed-container">
+                <!-- Twitter埋め込みコード -->
+                <a 
+                  class="twitter-timeline" 
+                  data-height="500" 
+                  data-theme="light" 
+                  href="https://twitter.com/Web3studenttalk"
+                >
+                  Web3学生トークのツイート
+                </a>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -210,10 +243,72 @@
 
 <script setup>
 import SectionTransition from '~/components/SectionTransition.vue'
+import { ref, onMounted, onBeforeUnmount } from 'vue'
 
 useHead({
-  title: 'Web3学生トーク - ホーム'
+  title: 'Web3学生トーク - ホーム',
+  script: [
+    {
+      src: 'https://platform.twitter.com/widgets.js',
+      async: true,
+      defer: true
+    }
+  ]
 })
+
+// タイプライターアニメーション用の変数
+const phrases = ['未来を創ろう', '課題を解決しよう', '可能性を広げよう', '価値を共有しよう'];
+const displayText = ref('');
+let currentPhrase = 0;
+let currentIndex = 0;
+let isDeleting = false;
+let timer = null;
+
+// タイプライターアニメーション関数
+const typeNextCharacter = () => {
+  const phrase = phrases[currentPhrase];
+  
+  // 削除中か文字入力中かで処理を分岐
+  if (isDeleting) {
+    displayText.value = phrase.substring(0, currentIndex - 1);
+    currentIndex--;
+    timer = setTimeout(typeNextCharacter, 50); // 削除スピード
+  } else {
+    displayText.value = phrase.substring(0, currentIndex + 1);
+    currentIndex++;
+    timer = setTimeout(typeNextCharacter, 150); // 入力スピード
+  }
+  
+  // 次のステップの条件分岐
+  if (!isDeleting && currentIndex === phrase.length) {
+    // 単語入力完了時、一時停止後に削除へ
+    isDeleting = true;
+    clearTimeout(timer);
+    timer = setTimeout(typeNextCharacter, 2000); // 単語表示後の待機時間
+  } else if (isDeleting && currentIndex === 0) {
+    // 削除完了時、次の単語へ
+    isDeleting = false;
+    currentPhrase = (currentPhrase + 1) % phrases.length;
+    clearTimeout(timer);
+    timer = setTimeout(typeNextCharacter, 500); // 次の単語開始前の待機時間
+  }
+};
+
+// コンポーネントマウント時の処理
+onMounted(() => {
+  // タイピングアニメーション開始
+  timer = setTimeout(typeNextCharacter, 1000);
+  
+  // Twitterウィジェットの読み込み
+  if (window.twttr) {
+    window.twttr.widgets.load();
+  }
+});
+
+// コンポーネントアンマウント時の処理
+onBeforeUnmount(() => {
+  if (timer) clearTimeout(timer);
+});
 </script>
 
 <style>
@@ -231,6 +326,21 @@ useHead({
   opacity: 0;
 }
 
+.twitter-embed-container {
+  min-height: 500px;
+  background-color: #f8fafc;
+  border-radius: 0.5rem;
+  overflow: hidden;
+}
+
+.typewriter-text {
+  white-space: nowrap;
+}
+
+.cursor-blink {
+  animation: blink 0.7s infinite;
+}
+
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -240,5 +350,10 @@ useHead({
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
 }
 </style>
