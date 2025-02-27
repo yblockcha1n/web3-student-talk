@@ -182,23 +182,15 @@
             </div>
           </div>
           
-          <!-- 右側：Twitter埋め込み（モバイルでは非表示） -->
+          <!-- 右側：X埋め込み（モバイルでは非表示） -->
           <div class="lg:col-span-2 hidden lg:block">
             <div class="card h-full overflow-hidden">
               <h3 class="text-xl font-bold mb-4 flex items-center">
                 <i class="fab fa-twitter text-[#5de8e8] mr-3"></i>
                 最新のツイート
               </h3>
-              <div class="twitter-embed-container">
-                <!-- Twitter埋め込みコード -->
-                <a 
-                  class="twitter-timeline" 
-                  data-height="500" 
-                  data-theme="light" 
-                  href="https://twitter.com/Web3studenttalk"
-                >
-                  Web3学生トークのツイート
-                </a>
+              <div class="twitter-embed-container" ref="twitterContainer">
+                <!-- この部分は動的に挿入されます -->
               </div>
             </div>
           </div>
@@ -245,15 +237,10 @@
 import SectionTransition from '~/components/SectionTransition.vue'
 import { ref, onMounted, onBeforeUnmount } from 'vue'
 
+const twitterContainer = ref(null);
+
 useHead({
-  title: 'Web3学生トーク - ホーム',
-  script: [
-    {
-      src: 'https://platform.twitter.com/widgets.js',
-      async: true,
-      defer: true
-    }
-  ]
+  title: 'Web3学生トーク - ホーム'
 })
 
 // タイプライターアニメーション用の変数
@@ -299,9 +286,25 @@ onMounted(() => {
   // タイピングアニメーション開始
   timer = setTimeout(typeNextCharacter, 1000);
   
-  // Twitterウィジェットの読み込み
-  if (window.twttr) {
-    window.twttr.widgets.load();
+  // Twitterウィジェットを手動で挿入
+  if (twitterContainer.value) {
+    // 既存のウィジェットを削除
+    twitterContainer.value.innerHTML = '';
+    
+    // アンカータグを追加
+    const anchor = document.createElement('a');
+    anchor.className = 'twitter-timeline';
+    anchor.href = 'https://twitter.com/Web3studenttalk?ref_src=twsrc%5Etfw';
+    anchor.setAttribute('data-height', '500');
+    anchor.textContent = 'Tweets by Web3studenttalk';
+    twitterContainer.value.appendChild(anchor);
+    
+    // スクリプトタグを追加
+    const script = document.createElement('script');
+    script.async = true;
+    script.src = 'https://platform.twitter.com/widgets.js';
+    script.charset = 'utf-8';
+    twitterContainer.value.appendChild(script);
   }
 });
 

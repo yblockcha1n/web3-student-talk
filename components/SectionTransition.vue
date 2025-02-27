@@ -8,7 +8,7 @@
       color === 'gray' ? 'text-gray-50' : 'text-white'
     ]"
   >
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 80" class="w-full h-auto">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 80" class="w-full h-auto" preserveAspectRatio="none">
       <path 
         :fill="currentColor" 
         fill-opacity="1" 
@@ -53,3 +53,15 @@ const currentColor = computed(() => {
   }
 })
 </script>
+
+<style scoped>
+.section-transition {
+  position: relative;
+  margin-bottom: -1px; /* 隙間を埋めるための負のマージン */
+}
+
+.section-transition svg {
+  display: block; /* インライン要素の余分な隙間を防ぐ */
+  line-height: 0; /* 下部の隙間を防ぐ代替手段 */
+}
+</style>

@@ -72,7 +72,7 @@ function initScene() {
   const ambientLight = new THREE.AmbientLight(0xffffff, 0.5)
   scene.add(ambientLight)
 
-  const pointLight = new THREE.PointLight(0x5de8e8, 1)
+  const pointLight = new THREE.PointLight(0x4a90e2, 1)
   pointLight.position.set(5, 5, 5)
   scene.add(pointLight)
 
@@ -118,18 +118,18 @@ function createBlockchain() {
   const isMobile = window.innerWidth < 768
   const blockCount = isMobile ? 8 : 12
   
-  // ブロックの素材 - アクセントカラーを使用
+  // ブロックの素材
   const blockMaterial = new THREE.MeshPhongMaterial({
-    color: 0x5de8e8,
+    color: 0x4a90e2,
     wireframe: true,
     wireframeLinewidth: 1,
     transparent: true,
     opacity: 0.7
   })
   
-  // ラインの素材 - アクセントカラーを使用
+  // ラインの素材
   const lineMaterial = new THREE.LineBasicMaterial({
-    color: 0x5de8e8,
+    color: 0x4a90e2,
     transparent: true,
     opacity: 0.5
   })
@@ -195,7 +195,7 @@ function createBlockchain() {
       line.userData = {
         fromBlock: blocks[i-1],
         toBlock: block,
-        originalColor: 0x5de8e8,
+        originalColor: 0x4a90e2,
         activeColor: 0x00ff00,
         active: false,
         activationDelay: (i-1) * 0.5 + 0.25 // ブロックの間で活性化
@@ -231,9 +231,9 @@ function animateBlocks() {
       block.userData.active = true
       
       // 活性化エフェクト
-      block.material.color.set(0x00ffff)
+      block.material.color.set(0x00ff00)
       setTimeout(() => {
-        block.material.color.set(0x5de8e8)
+        block.material.color.set(0x4a90e2)
       }, 500)
     }
   })
@@ -252,9 +252,9 @@ function animateBlocks() {
       line.userData.active = true
       
       // 活性化エフェクト
-      line.material.color.set(0x00ffff)
+      line.material.color.set(0x00ff00)
       setTimeout(() => {
-        line.material.color.set(0x5de8e8)
+        line.material.color.set(0x4a90e2)
       }, 500)
     }
   })
