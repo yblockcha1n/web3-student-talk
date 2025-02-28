@@ -55,20 +55,12 @@
                   <div class="relative bg-gradient-to-br from-blue-50 to-cyan-50 p-6 rounded-2xl shadow-md">
                     <div class="mission-stat-container">
                       <div class="mission-stat">
-                        <div class="mission-stat-number">3+</div>
+                        <div class="mission-stat-number">2+</div>
                         <div class="mission-stat-label">活動年数</div>
                       </div>
                       <div class="mission-stat">
-                        <div class="mission-stat-number">500+</div>
+                        <div class="mission-stat-number">70+</div>
                         <div class="mission-stat-label">コミュニティメンバー</div>
-                      </div>
-                      <div class="mission-stat">
-                        <div class="mission-stat-number">200+</div>
-                        <div class="mission-stat-label">開催イベント</div>
-                      </div>
-                      <div class="mission-stat">
-                        <div class="mission-stat-number">30+</div>
-                        <div class="mission-stat-label">協力パートナー</div>
                       </div>
                     </div>
                   </div>

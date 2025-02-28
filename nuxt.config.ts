@@ -50,8 +50,10 @@ export default defineNuxtConfig({
   runtimeConfig: {
     public: {
       googleAnalyticsId: process.env.GOOGLE_ANALYTICS_ID || '',
+      microcmsServiceDomain: process.env.MICROCMS_SERVICE_DOMAIN || '',
+      microcmsApiKey: process.env.MICROCMS_API_KEY || '',
     }
   },
-
+  
   compatibilityDate: '2025-02-25'
 })
