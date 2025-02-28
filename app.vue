@@ -1,11 +1,7 @@
 <template>
-  <div class="min-h-screen flex flex-col">
-    <TheHeader />
-    <main class="flex-grow pt-16">
-      <NuxtPage />
-    </main>
-    <TheFooter />
-  </div>
+  <NuxtLayout>
+    <NuxtPage />
+  </NuxtLayout>
 </template>
 
 <script setup>
@@ -25,16 +21,3 @@ useHead({
   }
 })
 </script>
-
-<style>
-.page-enter-active,
-.page-leave-active {
-  transition: all 0.3s ease-out;
-}
-
-.page-enter-from,
-.page-leave-to {
-  opacity: 0;
-  transform: translateY(10px);
-}
-</style>

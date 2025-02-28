@@ -28,5 +28,30 @@ export default defineNuxtConfig({
     '~/assets/css/main.css'
   ],
 
+  components: [
+    {
+      path: '~/components',
+      pathPrefix: false,
+    },
+  ],
+
+  // ルートパスからのリクエストも処理できるようにする
+  // これによりVercel Analyticsスクリプトのリクエストがエラーにならない
+  routeRules: {
+    '/_vercel/**': { proxy: '/_vercel/**' }
+  },
+
+  // 本番環境のみでVercelAnalyticsを有効化
+  experimental: {
+    payloadExtraction: false
+  },
+
+  // 環境変数でGoogleAnalyticsの測定IDを設定できるようにする
+  runtimeConfig: {
+    public: {
+      googleAnalyticsId: process.env.GOOGLE_ANALYTICS_ID || '',
+    }
+  },
+
   compatibilityDate: '2025-02-25'
 })
