@@ -38,25 +38,13 @@
               すべて
             </button>
             <button 
+              v-for="category in categories" 
+              :key="category.id"
               class="news-filter-btn"
-              :class="activeFilter === 'important' ? 'active' : ''"
-              @click="setFilter('important')"
+              :class="activeFilter === category.id ? 'active' : ''"
+              @click="setFilter(category.id)"
             >
-              重要なお知らせ
-            </button>
-            <button 
-              class="news-filter-btn"
-              :class="activeFilter === 'event' ? 'active' : ''"
-              @click="setFilter('event')"
-            >
-              イベント
-            </button>
-            <button 
-              class="news-filter-btn"
-              :class="activeFilter === 'update' ? 'active' : ''"
-              @click="setFilter('update')"
-            >
-              アップデート
+              {{ category.name }}
             </button>
           </div>
           
@@ -90,17 +78,17 @@
           <div v-else class="grid md:grid-cols-2 gap-6 mb-10">
             <BaseCard v-for="news in paginatedNews" :key="news.id" className="h-full">
               <div class="flex flex-wrap items-center gap-2 md:gap-4 mb-3">
-                <span class="text-gray-500 text-sm">{{ formatDate(news.date) }}</span>
-                <span :class="`news-category-badge ${getCategoryClass(news.category)}`">
-                  {{ getCategoryName(news.category) }}
+                <span class="text-gray-500 text-sm">{{ formatDate(news.date || news.publishedAt) }}</span>
+                <span v-if="news.category" :class="`news-category-badge ${getCategoryClass(news.category.name)}`">
+                  {{ news.category.name }}
                 </span>
               </div>
               <h3 class="news-title">
-                <NuxtLink :to="`/news/${news.id}`" class="hover:text-blue-600 transition-colors">
+                <a :href="`/newsdetail?id=${news.id}`" class="hover:text-blue-600 transition-colors">
                   {{ news.title }}
-                </NuxtLink>
+                </a>
               </h3>
-              <div class="news-content" v-html="news.content"></div>
+              <div class="news-content" v-html="getExcerpt(news.content)"></div>
               
               <div v-if="news.links && news.links.length > 0" class="mt-4">
                 <h4 class="text-base font-bold mb-2">関連リンク</h4>
@@ -113,10 +101,19 @@
                     rel="noopener noreferrer"
                     class="news-link"
                   >
-                    <i :class="link.icon + ' mr-2'"></i>
+                    <i :class="link.icon + ' mr-2'" v-if="link.icon"></i>
                     {{ link.text }}
                   </a>
                 </div>
+              </div>
+              
+              <div class="mt-4">
+                <a 
+                  :href="`/newsdetail?id=${news.id}`"
+                  class="text-blue-600 hover:text-blue-800 transition-colors inline-flex items-center"
+                >
+                  続きを読む <i class="fas fa-arrow-right ml-1"></i>
+                </a>
               </div>
             </BaseCard>
           </div>
@@ -218,94 +215,146 @@
   </div>
 </template>
 
-<script setup>
-import SectionTransition from '~/components/common/SectionTransition.vue'
-import BaseCard from '~/components/ui/BaseCard.vue'
-import { SOCIAL_LINKS } from '~/utils/constants'
-import { getCategoryClass, getCategoryName, calculatePaginationRange, formatDate } from '~/utils/helpers'
-import { ref, computed, onMounted, watch } from 'vue'
-import { getNewsList } from '~/utils/cms'
+<script>
+import SectionTransition from '~/components/common/SectionTransition.vue';
+import BaseCard from '~/components/ui/BaseCard.vue';
+import { SOCIAL_LINKS } from '~/utils/constants';
+import { getCategoryClass, calculatePaginationRange, formatDate } from '~/utils/helpers';
+import { getNewsList, getCategoryList } from '~/utils/cms';
 
-useHead({
-  title: 'Web3学生トーク - お知らせ'
-})
-
-const socialLinks = SOCIAL_LINKS
-
-// フィルター管理
-const activeFilter = ref('all')
-const setFilter = (filter) => {
-  activeFilter.value = filter
-  updatePage(1) // フィルター変更時は1ページ目に戻る
-}
-
-// ページネーション管理
-const currentPage = ref(1)
-const itemsPerPage = ref(6)
-
-// ニュースデータとローディング状態
-const newsData = ref([])
-const isLoading = ref(true)
-
-// ニュースデータの取得
-const fetchNews = async () => {
-  isLoading.value = true
-  try {
-    // フィルター設定
-    const queries = {
-      limit: 100 // すべての記事を取得（実際のプロジェクトでは適切なページネーションを設定）
-    }
+export default {
+  components: {
+    SectionTransition,
+    BaseCard
+  },
+  
+  data() {
+    return {
+      categories: [],
+      activeFilter: 'all',
+      currentPage: 1,
+      itemsPerPage: 6,
+      newsData: [],
+      isLoading: true,
+      socialLinks: SOCIAL_LINKS
+    };
+  },
+  
+  computed: {
+    filteredNews() {
+      return this.newsData;
+    },
     
-    // カテゴリーフィルターが「すべて」以外の場合は、フィルターを適用
-    if (activeFilter.value !== 'all') {
-      queries.filters = `category[equals]${activeFilter.value}`
-    }
+    totalItems() {
+      return this.filteredNews.length;
+    },
     
-    // microCMSからデータを取得
-    const response = await getNewsList(queries)
-    newsData.value = response.contents
-  } catch (error) {
-    console.error('ニュースの取得に失敗しました:', error)
-    newsData.value = []
-  } finally {
-    isLoading.value = false
+    totalPages() {
+      return Math.ceil(this.totalItems / this.itemsPerPage);
+    },
+    
+    paginationRange() {
+      return calculatePaginationRange(this.currentPage, this.totalPages, 1);
+    },
+    
+    paginatedNews() {
+      const start = (this.currentPage - 1) * this.itemsPerPage;
+      const end = start + this.itemsPerPage;
+      return this.filteredNews.slice(start, end);
+    },
+    
+    displayedItemsCount() {
+      return this.paginatedNews.length;
+    }
+  },
+  
+  methods: {
+    formatDate,
+    getCategoryClass,
+    calculatePaginationRange,
+    
+    getExcerpt(html, maxLength = 150) {
+      if (!html) return '';
+      
+      // HTMLタグを除去
+      const div = document.createElement('div');
+      div.innerHTML = html;
+      const text = div.textContent || div.innerText || '';
+      
+      // 長さを制限
+      if (text.length <= maxLength) return text;
+      return text.substring(0, maxLength) + '...';
+    },
+    
+    setFilter(filter) {
+      this.activeFilter = filter;
+      this.updatePage(1); // フィルター変更時は1ページ目に戻る
+      this.fetchNews();
+    },
+    
+    updatePage(page) {
+      this.currentPage = page;
+    },
+    
+    async fetchCategories() {
+      try {
+        const response = await getCategoryList();
+        this.categories = response.contents;
+      } catch (error) {
+        console.error('カテゴリーの取得に失敗しました:', error);
+        this.categories = [];
+      }
+    },
+    
+    async fetchNews() {
+      this.isLoading = true;
+      try {
+        // フィルター設定
+        const queries = {
+          limit: 100 // すべての記事を取得（実際のプロジェクトでは適切なページネーションを設定）
+        };
+        
+        // カテゴリーフィルターが「すべて」以外の場合は、フィルターを適用
+        if (this.activeFilter !== 'all') {
+          queries.filters = `category[equals]${this.activeFilter}`;
+        }
+        
+        // microCMSからデータを取得
+        const response = await getNewsList(queries);
+        this.newsData = response.contents;
+      } catch (error) {
+        console.error('ニュースの取得に失敗しました:', error);
+        this.newsData = [];
+      } finally {
+        this.isLoading = false;
+      }
+    }
+  },
+  
+  head() {
+    return {
+      title: 'Web3学生トーク - お知らせ',
+      meta: [
+        { hid: 'description', name: 'description', content: 'Web3学生トークの最新情報やイベント告知、アップデート情報などを掲載しています。'},
+        { hid: 'og:title', property: 'og:title', content: 'Web3学生トーク - お知らせ' },
+        { hid: 'og:description', property: 'og:description', content: 'Web3学生トークの最新情報やイベント告知、アップデート情報などを掲載しています。' },
+        { hid: 'og:type', property: 'og:type', content: 'website' },
+        { hid: 'og:url', property: 'og:url', content: 'https://www.web3student-talk.com/news' }
+      ]
+    };
+  },
+  
+  async mounted() {
+    await this.fetchCategories();
+    await this.fetchNews();
+  },
+  
+  watch: {
+    activeFilter() {
+      this.fetchNews();
+    }
   }
-}
-
-// フィルターが変更されたらデータを再取得
-watch(activeFilter, fetchNews)
-
-// ページの更新
-const updatePage = (page) => {
-  currentPage.value = page
-}
-
-// コンポーネントのマウント時にデータを取得
-onMounted(fetchNews)
-
-// フィルター適用したお知らせ
-const filteredNews = computed(() => newsData.value)
-
-// 総アイテム数
-const totalItems = computed(() => filteredNews.value.length)
-
-// 総ページ数
-const totalPages = computed(() => Math.ceil(totalItems.value / itemsPerPage.value))
-
-// ページネーション表示用の範囲
-const paginationRange = computed(() => {
-  return calculatePaginationRange(currentPage.value, totalPages.value, 1)
-})
-
-// 現在のページに表示するアイテム
-const paginatedNews = computed(() => {
-  const start = (currentPage.value - 1) * itemsPerPage.value
-  const end = start + itemsPerPage.value
-  return filteredNews.value.slice(start, end)
-})
-
-// 表示件数
-const displayedItemsCount = computed(() => paginatedNews.value.length)
+};
 </script>
 
 <style scoped>

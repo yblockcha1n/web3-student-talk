@@ -4,18 +4,18 @@
  * @returns スタイルクラス
  */
 export const getCategoryClass = (category: string): string => {
-    switch (category) {
-      case 'important':
-        return 'bg-red-100 text-red-800'
-      case 'event':
-        return 'bg-green-100 text-green-800'
-      case 'update':
-        return 'bg-blue-100 text-blue-800'
-      default:
-        return 'bg-gray-100 text-gray-800'
-    }
-  };
-  
+  switch (category) {
+    case '重要なお知らせ':
+      return 'bg-red-100 text-red-800'
+    case 'イベント':
+      return 'bg-green-100 text-green-800'
+    case 'アップデート':
+      return 'bg-blue-100 text-blue-800'
+    default:
+      return 'bg-gray-100 text-gray-800'
+  }
+};
+
 /**
  * ISO形式の日付文字列をYY/MM/DD形式に変換する
  * @param dateString ISO形式の日付文字列
@@ -32,30 +32,32 @@ export const formatDate = (dateString: string): string => {
 };
 
 /**
- * カテゴリー名を日本語に変換
- * @param category カテゴリー名
- * @returns 日本語のカテゴリー名
+ * カテゴリーIDからスタイルクラスを取得（MicroCMS対応版）
+ * @param categoryId カテゴリーID
+ * @returns スタイルクラス
  */
-export const getCategoryName = (category: string): string => {
-  switch (category) {
+export const getCategoryClassById = (categoryId: string): string => {
+  // カテゴリIDに応じたスタイルを返す
+  // 必要に応じてIDとスタイルのマッピングを追加
+  switch (categoryId) {
     case 'important':
-      return '重要なお知らせ'
+      return 'bg-red-100 text-red-800';
     case 'event':
-      return 'イベント'
+      return 'bg-green-100 text-green-800';
     case 'update':
-      return 'アップデート'
+      return 'bg-blue-100 text-blue-800';
     default:
-      return 'その他'
+      return 'bg-gray-100 text-gray-800';
   }
-}
+};
 
 /**
  * 現在の年を返す
  * @returns 現在の年（数値）
  */
 export const getCurrentYear = (): number => {
-  return new Date().getFullYear()
-}
+  return new Date().getFullYear();
+};
 
 /**
  * ページネーションの範囲を計算
@@ -65,33 +67,33 @@ export const getCurrentYear = (): number => {
  * @returns ページ番号の配列（省略記号を含む）
  */
 export const calculatePaginationRange = (currentPage: number, totalPages: number, delta: number = 1) => {
-  let range: (number | string)[] = []
+  let range: (number | string)[] = [];
   
   if (totalPages <= 5) {
     // 5ページ以下の場合は全ページ表示
-    range = Array.from({ length: totalPages }, (_, i) => i + 1)
+    range = Array.from({ length: totalPages }, (_, i) => i + 1);
   } else {
     // 最初のページは常に表示
-    range.push(1)
+    range.push(1);
     
     // 現在のページの前後を表示
-    const beforePage = Math.max(2, currentPage - delta)
-    const afterPage = Math.min(totalPages - 1, currentPage + delta)
+    const beforePage = Math.max(2, currentPage - delta);
+    const afterPage = Math.min(totalPages - 1, currentPage + delta);
     
     // 省略記号の表示判定
-    if (beforePage > 2) range.push('...')
+    if (beforePage > 2) range.push('...');
     
     // 前後のページを追加
     for (let i = beforePage; i <= afterPage; i++) {
-      range.push(i)
+      range.push(i);
     }
     
     // 省略記号の表示判定
-    if (afterPage < totalPages - 1) range.push('...')
+    if (afterPage < totalPages - 1) range.push('...');
     
     // 最後のページは常に表示
-    range.push(totalPages)
+    range.push(totalPages);
   }
   
-  return range
-}
+  return range;
+};

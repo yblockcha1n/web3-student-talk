@@ -6,7 +6,8 @@ export default defineNuxtConfig({
       meta: [
         { charset: 'utf-8' },
         { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-        { name: 'description', content: 'Web3やメタバースについて語り合うコミュニティ' }
+        { name: 'description', content: 'Web3やメタバースについて語り合うコミュニティ' },
+        { name: 'google-site-verification', content: 'chLtV5snUNUbS8oaftJI38hWeIP0OuYBm_k-Dhm_RcA' }
       ],
       link: [
         { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
@@ -35,8 +36,7 @@ export default defineNuxtConfig({
     },
   ],
 
-  // ルートパスからのリクエストも処理できるようにする
-  // これによりVercel Analyticsスクリプトのリクエストがエラーにならない
+  // ルートルールの単純化
   routeRules: {
     '/_vercel/**': { proxy: '/_vercel/**' }
   },
