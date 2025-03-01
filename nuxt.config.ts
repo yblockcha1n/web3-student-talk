@@ -6,11 +6,12 @@ export default defineNuxtConfig({
       meta: [
         { charset: 'utf-8' },
         { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-        { name: 'description', content: 'Web3やメタバースについて語り合うコミュニティ' }
+        { name: 'description', content: 'Web3やメタバースについて語り合うコミュニティ' },
+        { name: 'google-site-verification', content: 'chLtV5snUNUbS8oaftJI38hWeIP0OuYBm_k-Dhm_RcA' }
       ],
       link: [
         { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
-      ]
+      ],
     },
     pageTransition: {
       name: 'page',
@@ -28,5 +29,31 @@ export default defineNuxtConfig({
     '~/assets/css/main.css'
   ],
 
+  components: [
+    {
+      path: '~/components',
+      pathPrefix: false,
+    },
+  ],
+
+  // ルートルールの単純化
+  routeRules: {
+    '/_vercel/**': { proxy: '/_vercel/**' }
+  },
+
+  // 本番環境のみでVercelAnalyticsを有効化
+  experimental: {
+    payloadExtraction: false
+  },
+
+  // 環境変数でGoogleAnalyticsの測定IDを設定できるようにする
+  runtimeConfig: {
+    public: {
+      googleAnalyticsId: process.env.GOOGLE_ANALYTICS_ID || '',
+      microcmsServiceDomain: process.env.MICROCMS_SERVICE_DOMAIN || '',
+      microcmsApiKey: process.env.MICROCMS_API_KEY || '',
+    }
+  },
+  
   compatibilityDate: '2025-02-25'
 })

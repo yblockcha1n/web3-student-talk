@@ -1,235 +1,421 @@
 <template>
-    <div>
-      <!-- ヒーローセクション -->
-      <section class="bg-blue-900 text-white py-16 relative">
-        <div class="container mx-auto px-4">
-          <div class="max-w-3xl mx-auto text-center">
-            <h1 class="text-4xl font-bold mb-4">お知らせ</h1>
-            <p class="text-xl text-blue-100">
-              Web3学生トークからの最新情報
-            </p>
+  <div>
+    <!-- ヒーローセクション -->
+    <section class="relative bg-gradient-to-br from-blue-800 to-blue-900 text-white py-20 md:py-28 overflow-hidden">
+      <!-- 背景装飾 -->
+      <div class="absolute inset-0 opacity-10">
+        <div class="absolute top-20 left-20 w-48 h-48 rounded-full bg-white"></div>
+        <div class="absolute bottom-20 right-20 w-64 h-64 rounded-full bg-blue-300"></div>
+        <div class="absolute top-1/4 right-1/3 w-20 h-20 rounded-full bg-blue-200"></div>
+      </div>
+      
+      <div class="container mx-auto px-4 relative z-10">
+        <div class="max-w-4xl mx-auto text-center">
+          <h1 class="text-4xl md:text-6xl font-bold mb-6">お知らせ</h1>
+          <p class="text-xl md:text-2xl text-blue-100 max-w-3xl mx-auto">
+            Web3学生トークからの最新情報
+          </p>
+        </div>
+      </div>
+      
+      <!-- 波形トランジション -->
+      <div class="absolute bottom-0 left-0 w-full">
+        <SectionTransition color="#ffffff" />
+      </div>
+    </section>
+
+    <!-- お知らせリスト -->
+    <section class="py-16 md:py-24 bg-white">
+      <div class="container mx-auto px-4">
+        <div class="max-w-5xl mx-auto">
+          <!-- お知らせフィルター -->
+          <div class="mb-10 flex flex-wrap gap-2 md:gap-4 justify-center">
+            <button 
+              class="news-filter-btn"
+              :class="activeFilter === 'all' ? 'active' : ''"
+              @click="setFilter('all')"
+            >
+              すべて
+            </button>
+            <button 
+              v-for="category in categories" 
+              :key="category.id"
+              class="news-filter-btn"
+              :class="activeFilter === category.id ? 'active' : ''"
+              @click="setFilter(category.id)"
+            >
+              {{ category.name }}
+            </button>
           </div>
-        </div>
-        
-        <!-- 波形トランジション -->
-        <div class="absolute bottom-0 left-0 w-full">
-          <SectionTransition color="#ffffff" />
-        </div>
-      </section>
-  
-      <!-- お知らせリスト -->
-      <section class="py-12 bg-white">
-        <div class="container mx-auto px-4">
-          <div class="max-w-4xl mx-auto">
-            <!-- お知らせフィルター -->
-            <div class="mb-8 flex flex-wrap gap-2 md:gap-4 justify-center">
-              <button 
-                class="px-4 py-2 rounded-full text-sm md:text-base font-medium transition-colors"
-                :class="activeFilter === 'all' ? 'bg-blue-600 text-white' : 'bg-blue-100 text-blue-800 hover:bg-blue-200'"
-                @click="setFilter('all')"
+          
+          <!-- ページ選択 -->
+          <div class="mb-8 flex justify-between items-center">
+            <div class="text-gray-500">
+              全 <span class="font-bold">{{ totalItems }}</span> 件中 <span class="font-bold">{{ displayedItemsCount }}</span> 件表示
+            </div>
+            <div class="flex gap-2">
+              <select 
+                v-model="itemsPerPage" 
+                class="px-3 py-2 rounded-lg border border-gray-200 text-sm"
+                @change="updatePage(1)"
               >
-                すべて
+                <option :value="6">6件ずつ</option>
+                <option :value="12">12件ずつ</option>
+                <option :value="24">24件ずつ</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- ローディング表示 -->
+          <div v-if="isLoading" class="text-center py-10">
+            <div class="mb-4">
+              <i class="fas fa-spinner fa-spin text-4xl text-gray-300"></i>
+            </div>
+            <p class="text-gray-500">読み込み中...</p>
+          </div>
+
+          <!-- お知らせ記事一覧 -->
+          <div v-else class="grid md:grid-cols-2 gap-6 mb-10">
+            <BaseCard v-for="news in paginatedNews" :key="news.id" className="h-full">
+              <div class="flex flex-wrap items-center gap-2 md:gap-4 mb-3">
+                <span class="text-gray-500 text-sm">{{ formatDate(news.date || news.publishedAt) }}</span>
+                <span v-if="news.category" :class="`news-category-badge ${getCategoryClass(news.category.name)}`">
+                  {{ news.category.name }}
+                </span>
+              </div>
+              <h3 class="news-title">
+                <a :href="`/newsdetail?id=${news.id}`" class="hover:text-blue-600 transition-colors">
+                  {{ news.title }}
+                </a>
+              </h3>
+              <div class="news-content" v-html="getExcerpt(news.content)"></div>
+              
+              <div v-if="news.links && news.links.length > 0" class="mt-4">
+                <h4 class="text-base font-bold mb-2">関連リンク</h4>
+                <div class="flex flex-wrap gap-2">
+                  <a 
+                    v-for="(link, linkIndex) in news.links" 
+                    :key="linkIndex"
+                    :href="link.url"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="news-link"
+                  >
+                    <i :class="link.icon + ' mr-2'" v-if="link.icon"></i>
+                    {{ link.text }}
+                  </a>
+                </div>
+              </div>
+              
+              <div class="mt-4">
+                <a 
+                  :href="`/newsdetail?id=${news.id}`"
+                  class="text-blue-600 hover:text-blue-800 transition-colors inline-flex items-center"
+                >
+                  続きを読む <i class="fas fa-arrow-right ml-1"></i>
+                </a>
+              </div>
+            </BaseCard>
+          </div>
+          
+          <!-- ページネーション -->
+          <div v-if="totalPages > 1" class="flex justify-center">
+            <div class="flex items-center gap-1">
+              <button 
+                class="pagination-btn" 
+                :disabled="currentPage === 1" 
+                @click="updatePage(currentPage - 1)"
+                :class="{ 'disabled': currentPage === 1 }"
+              >
+                <i class="fas fa-chevron-left"></i>
               </button>
+              
+              <template v-for="page in paginationRange" :key="page">
+                <button 
+                  v-if="page !== '...'" 
+                  class="pagination-btn" 
+                  :class="{ 'active': currentPage === page }"
+                  @click="updatePage(page)"
+                >
+                  {{ page }}
+                </button>
+                <span v-else class="px-2 py-1">...</span>
+              </template>
+              
               <button 
-                class="px-4 py-2 rounded-full text-sm md:text-base font-medium transition-colors"
-                :class="activeFilter === 'event' ? 'bg-blue-600 text-white' : 'bg-blue-100 text-blue-800 hover:bg-blue-200'"
-                @click="setFilter('event')"
+                class="pagination-btn" 
+                :disabled="currentPage === totalPages" 
+                @click="updatePage(currentPage + 1)"
+                :class="{ 'disabled': currentPage === totalPages }"
               >
-                イベント
-              </button>
-              <button 
-                class="px-4 py-2 rounded-full text-sm md:text-base font-medium transition-colors"
-                :class="activeFilter === 'update' ? 'bg-blue-600 text-white' : 'bg-blue-100 text-blue-800 hover:bg-blue-200'"
-                @click="setFilter('update')"
-              >
-                アップデート
-              </button>
-              <button 
-                class="px-4 py-2 rounded-full text-sm md:text-base font-medium transition-colors"
-                :class="activeFilter === 'important' ? 'bg-blue-600 text-white' : 'bg-blue-100 text-blue-800 hover:bg-blue-200'"
-                @click="setFilter('important')"
-              >
-                重要なお知らせ
+                <i class="fas fa-chevron-right"></i>
               </button>
             </div>
-  
-            <!-- お知らせ記事一覧 -->
-            <div class="space-y-6">
-              <div v-for="(news, index) in filteredNews" :key="index" class="bg-white border border-gray-200 rounded-xl p-4 md:p-6 shadow-sm hover:shadow-md transition-shadow">
-                <div class="flex flex-wrap items-center gap-2 md:gap-4 mb-3">
-                  <span class="text-gray-500 text-sm">{{ news.date }}</span>
-                  <span class="px-3 py-1 rounded-full text-xs font-medium" :class="getCategoryClass(news.category)">
-                    {{ getCategoryName(news.category) }}
-                  </span>
-                </div>
-                <h3 class="text-lg md:text-xl font-bold mb-3">{{ news.title }}</h3>
-                <div class="prose text-sm md:text-base text-gray-600 mb-4" v-html="news.content"></div>
-                
-                <div v-if="news.links && news.links.length > 0" class="mt-4">
-                  <h4 class="text-base font-bold mb-2">関連リンク</h4>
-                  <div class="flex flex-wrap gap-2">
-                    <a 
-                      v-for="(link, linkIndex) in news.links" 
-                      :key="linkIndex"
-                      :href="link.url"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      class="inline-flex items-center px-3 py-1 rounded-lg text-sm bg-gray-100 hover:bg-gray-200 transition-colors"
-                    >
-                      <i :class="link.icon" class="mr-2"></i>
-                      {{ link.text }}
-                    </a>
+          </div>
+          
+          <!-- お知らせがない場合 -->
+          <div v-if="!isLoading && filteredNews.length === 0" class="text-center py-10">
+            <div class="mb-4">
+              <i class="fas fa-search text-4xl text-gray-300"></i>
+            </div>
+            <p class="text-gray-500">該当するお知らせはありません</p>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <!-- 購読セクション -->
+    <section class="py-16 bg-gray-50">
+      <div class="container mx-auto px-4">
+        <div class="max-w-4xl mx-auto bg-white rounded-2xl shadow-md overflow-hidden">
+          <div class="grid md:grid-cols-2 gap-0">
+            <div class="p-8 md:p-10">
+              <h2 class="text-2xl font-bold mb-4">最新情報を受け取る</h2>
+              <p class="text-gray-600 mb-6">
+                イベントやアップデートなどの最新情報を見逃さないよう、公式SNSをフォローしてください。
+              </p>
+              <div class="space-y-4">
+                <a :href="socialLinks.twitter.url" 
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="inline-flex items-center text-blue-600 hover:text-blue-800 transition-colors group"
+                >
+                  <div class="w-10 h-10 rounded-full bg-blue-100 text-blue-500 flex items-center justify-center mr-3 group-hover:bg-blue-200 transition-colors">
+                    <i :class="socialLinks.twitter.icon"></i>
                   </div>
+                  <span>X（Twitter）をフォロー</span>
+                </a>
+                <a :href="socialLinks.discord.url" 
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="inline-flex items-center text-blue-600 hover:text-blue-800 transition-colors group"
+                >
+                  <div class="w-10 h-10 rounded-full bg-blue-100 text-blue-500 flex items-center justify-center mr-3 group-hover:bg-blue-200 transition-colors">
+                    <i :class="socialLinks.discord.icon"></i>
+                  </div>
+                  <span>Discordに参加する</span>
+                </a>
+              </div>
+            </div>
+            <div class="hidden md:block relative bg-gradient-to-br from-blue-500 to-blue-700">
+              <div class="absolute inset-0 opacity-20">
+                <div class="absolute top-10 left-10 w-20 h-20 rounded-full bg-white"></div>
+                <div class="absolute bottom-10 right-10 w-32 h-32 rounded-full bg-blue-300"></div>
+              </div>
+              <div class="absolute inset-0 flex items-center justify-center">
+                <div class="text-white text-opacity-90 text-6xl">
+                  <i class="fas fa-bell"></i>
                 </div>
               </div>
             </div>
-            
-            <!-- ページがない場合 -->
-            <div v-if="filteredNews.length === 0" class="text-center py-10">
-              <p class="text-gray-500">該当するお知らせはありません</p>
-            </div>
           </div>
         </div>
-      </section>
-    </div>
-  </template>
+      </div>
+    </section>
+  </div>
+</template>
+
+<script>
+import SectionTransition from '~/components/common/SectionTransition.vue';
+import BaseCard from '~/components/ui/BaseCard.vue';
+import { SOCIAL_LINKS } from '~/utils/constants';
+import { getCategoryClass, calculatePaginationRange, formatDate } from '~/utils/helpers';
+import { getNewsList, getCategoryList } from '~/utils/cms';
+
+export default {
+  components: {
+    SectionTransition,
+    BaseCard
+  },
   
-  <script setup>
-  import { ref, computed } from 'vue'
-  import SectionTransition from '~/components/SectionTransition.vue'
+  data() {
+    return {
+      categories: [],
+      activeFilter: 'all',
+      currentPage: 1,
+      itemsPerPage: 6,
+      newsData: [],
+      isLoading: true,
+      socialLinks: SOCIAL_LINKS
+    };
+  },
   
-  useHead({
-    title: 'Web3学生トーク - お知らせ'
-  })
-  
-  // フィルター管理
-  const activeFilter = ref('all')
-  const setFilter = (filter) => {
-    activeFilter.value = filter
-  }
-  
-  // お知らせデータ
-  const newsData = [
-    {
-      date: '24/12/26',
-      category: 'important',
-      title: '年末年始休業のお知らせ',
-      content: `
-        <p>平素より、Web3学生トークをご利用いただき、誠にありがとうございます。</p>
-        <p>年末年始の休業期間について、下記の通りお知らせいたします。</p>
-        <ul>
-          <li>休業期間: 2024年12月29日(日) 〜 2025年1月3日(金)</li>
-        </ul>
-        <p>期間中はXスペースの開催およびDiscordでのサポート対応をお休みさせていただきます。</p>
-        <p>2025年1月4日(土)より通常通り運営を再開いたします。ご不便をおかけしますが、何卒ご了承くださいますようお願い申し上げます。</p>
-      `,
-      links: []
+  computed: {
+    filteredNews() {
+      return this.newsData;
     },
-    {
-      date: '25/1/1',
-      category: 'update',
-      title: '新年のご挨拶',
-      content: `
-        <p>あけましておめでとうございます。</p>
-        <p>旧年中は格別のご愛顧を賜り、誠にありがとうございました。</p>
-        <p>本年もWeb3学生トークをどうぞよろしくお願い申し上げます。</p>
-        <p>2025年は、より多くのWeb3初心者の方が参加しやすいコミュニティを目指して、様々な企画を計画しております。今後のお知らせにご期待ください。</p>
-      `,
-      links: []
+    
+    totalItems() {
+      return this.filteredNews.length;
     },
-    {
-      date: '24/11/26',
-      category: 'update',
-      title: 'ウェブサイトリニューアルのお知らせ',
-      content: `
-        <p>Web3学生トークの公式ウェブサイトをリニューアルしました。</p>
-        <p>より見やすく、使いやすいデザインに一新し、コミュニティの活動内容やPizzaトークンについての情報も充実させました。</p>
-        <p>今後もコンテンツの拡充を予定しておりますので、ぜひご期待ください。</p>
-      `,
-      links: []
+    
+    totalPages() {
+      return Math.ceil(this.totalItems / this.itemsPerPage);
     },
-    {
-      date: '24/11/15',
-      category: 'event',
-      title: 'Web3初心者向けオンラインセミナー開催のお知らせ',
-      content: `
-        <p>Web3やブロックチェーンについて基礎から学べるオンラインセミナーを開催します。</p>
-        <p><strong>開催日時:</strong> 2024年12月10日(火) 19:00〜20:30</p>
-        <p><strong>参加方法:</strong> Discordのイベントチャンネルからご参加いただけます。事前登録は不要です。</p>
-        <p><strong>内容:</strong></p>
-        <ul>
-          <li>Web3とは何か？基本概念の解説</li>
-          <li>ブロックチェーン技術の基礎知識</li>
-          <li>NFTやDeFiの仕組みと活用例</li>
-          <li>質疑応答</li>
-        </ul>
-        <p>初めての方でも分かりやすく解説しますので、お気軽にご参加ください。</p>
-      `,
-      links: [
-        {
-          text: 'Discordに参加',
-          url: 'https://discord.com/invite/BbxuwH5WS3',
-          icon: 'fab fa-discord'
+    
+    paginationRange() {
+      return calculatePaginationRange(this.currentPage, this.totalPages, 1);
+    },
+    
+    paginatedNews() {
+      const start = (this.currentPage - 1) * this.itemsPerPage;
+      const end = start + this.itemsPerPage;
+      return this.filteredNews.slice(start, end);
+    },
+    
+    displayedItemsCount() {
+      return this.paginatedNews.length;
+    }
+  },
+  
+  methods: {
+    formatDate,
+    getCategoryClass,
+    calculatePaginationRange,
+    
+    getExcerpt(html, maxLength = 150) {
+      if (!html) return '';
+      
+      // HTMLタグを除去
+      const div = document.createElement('div');
+      div.innerHTML = html;
+      const text = div.textContent || div.innerText || '';
+      
+      // 長さを制限
+      if (text.length <= maxLength) return text;
+      return text.substring(0, maxLength) + '...';
+    },
+    
+    setFilter(filter) {
+      this.activeFilter = filter;
+      this.updatePage(1); // フィルター変更時は1ページ目に戻る
+      this.fetchNews();
+    },
+    
+    updatePage(page) {
+      this.currentPage = page;
+    },
+    
+    async fetchCategories() {
+      try {
+        const response = await getCategoryList();
+        this.categories = response.contents;
+      } catch (error) {
+        console.error('カテゴリーの取得に失敗しました:', error);
+        this.categories = [];
+      }
+    },
+    
+    async fetchNews() {
+      this.isLoading = true;
+      try {
+        // フィルター設定
+        const queries = {
+          limit: 100 // すべての記事を取得（実際のプロジェクトでは適切なページネーションを設定）
+        };
+        
+        // カテゴリーフィルターが「すべて」以外の場合は、フィルターを適用
+        if (this.activeFilter !== 'all') {
+          queries.filters = `category[equals]${this.activeFilter}`;
         }
-      ]
-    },
-    {
-      date: '24/10/20',
-      category: 'update',
-      title: 'Pizzaトークン配布基準の更新について',
-      content: `
-        <p>コミュニティトークン「Pizza」の配布基準を一部更新しました。</p>
-        <p>主な変更点は以下の通りです：</p>
-        <ul>
-          <li>Xスペース参加時の配布量を調整</li>
-          <li>コミュニティ貢献に対する新たな報酬カテゴリを追加</li>
-          <li>特別イベント参加時のボーナス配布を導入</li>
-        </ul>
-        <p>詳細は公式ドキュメントをご確認ください。</p>
-      `,
-      links: [
-        {
-          text: '配布基準の詳細',
-          url: 'https://west-pizza.notion.site/2d54b18c324e41c0af7af6bd8b4262b6',
-          icon: 'fas fa-external-link-alt'
-        }
-      ]
+        
+        // microCMSからデータを取得
+        const response = await getNewsList(queries);
+        this.newsData = response.contents;
+      } catch (error) {
+        console.error('ニュースの取得に失敗しました:', error);
+        this.newsData = [];
+      } finally {
+        this.isLoading = false;
+      }
     }
-  ]
+  },
   
-  // フィルター適用したお知らせ
-  const filteredNews = computed(() => {
-    if (activeFilter.value === 'all') {
-      return newsData
-    }
-    return newsData.filter(news => news.category === activeFilter.value)
-  })
+  head() {
+    return {
+      title: 'Web3学生トーク - お知らせ',
+      meta: [
+        { hid: 'description', name: 'description', content: 'Web3学生トークの最新情報やイベント告知、アップデート情報などを掲載しています。'},
+        { hid: 'og:title', property: 'og:title', content: 'Web3学生トーク - お知らせ' },
+        { hid: 'og:description', property: 'og:description', content: 'Web3学生トークの最新情報やイベント告知、アップデート情報などを掲載しています。' },
+        { hid: 'og:type', property: 'og:type', content: 'website' },
+        { hid: 'og:url', property: 'og:url', content: 'https://www.web3student-talk.com/news' }
+      ]
+    };
+  },
   
-  // カテゴリーに応じたスタイルを取得
-  const getCategoryClass = (category) => {
-    switch (category) {
-      case 'important':
-        return 'bg-red-100 text-red-800'
-      case 'event':
-        return 'bg-green-100 text-green-800'
-      case 'update':
-        return 'bg-blue-100 text-blue-800'
-      default:
-        return 'bg-gray-100 text-gray-800'
+  async mounted() {
+    await this.fetchCategories();
+    await this.fetchNews();
+  },
+  
+  watch: {
+    activeFilter() {
+      this.fetchNews();
     }
   }
-  
-  // カテゴリー名を取得
-  const getCategoryName = (category) => {
-    switch (category) {
-      case 'important':
-        return '重要なお知らせ'
-      case 'event':
-        return 'イベント'
-      case 'update':
-        return 'アップデート'
-      default:
-        return 'その他'
-    }
-  }
-  </script>
+};
+</script>
+
+<style scoped>
+/* フィルターセクション */
+.news-filter-btn {
+  @apply px-4 py-2 rounded-full text-sm md:text-base font-medium transition-colors 
+         bg-blue-100 text-blue-800 hover:bg-blue-200;
+}
+
+.news-filter-btn.active {
+  @apply bg-blue-600 text-white;
+}
+
+/* ニュースリスト */
+.news-title {
+  @apply text-lg md:text-xl font-bold mb-3 text-gray-800;
+}
+
+.news-content {
+  @apply text-base text-gray-600 mb-4;
+  max-height: 6rem;
+  overflow: hidden;
+  position: relative;
+}
+
+/* オプション: 省略記号を表示したい場合 */
+.news-content::after {
+  content: "...";
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  padding-left: 1rem;
+  background: linear-gradient(to right, transparent, white 50%);
+}
+
+/* カテゴリーバッジ */
+.news-category-badge {
+  @apply inline-flex items-center px-3 py-1 rounded-full text-xs font-medium;
+}
+
+/* ニュースリンク */
+.news-link {
+  @apply inline-flex items-center px-3 py-1 rounded-lg bg-gray-100 hover:bg-gray-200 
+         text-sm text-gray-700 transition-colors;
+}
+
+/* ページネーション */
+.pagination-btn {
+  @apply w-8 h-8 flex items-center justify-center rounded-md border border-gray-200 
+         text-gray-700 transition-colors;
+}
+
+.pagination-btn.active {
+  @apply bg-blue-600 text-white border-blue-600;
+}
+
+.pagination-btn.disabled {
+  @apply opacity-50 cursor-not-allowed;
+}
+
+.pagination-btn:not(.active, .disabled):hover {
+  @apply bg-gray-100;
+}
+</style>

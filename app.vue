@@ -1,11 +1,7 @@
 <template>
-  <div class="min-h-screen flex flex-col">
-    <TheHeader />
-    <main class="flex-grow pt-16">
-      <NuxtPage />
-    </main>
-    <TheFooter />
-  </div>
+  <NuxtLayout>
+    <NuxtPage />
+  </NuxtLayout>
 </template>
 
 <script setup>
@@ -20,21 +16,14 @@ useHead({
       href: 'https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap'
     }
   ],
+  meta: [
+    {
+      name: 'google-site-verification',
+      content: 'chLtV5snUNUbS8oaftJI38hWeIP0OuYBm_k-Dhm_RcA'
+    }
+  ],
   htmlAttrs: {
     lang: 'ja'
   }
 })
 </script>
-
-<style>
-.page-enter-active,
-.page-leave-active {
-  transition: all 0.3s ease-out;
-}
-
-.page-enter-from,
-.page-leave-to {
-  opacity: 0;
-  transform: translateY(10px);
-}
-</style>

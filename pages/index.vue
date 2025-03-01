@@ -22,12 +22,12 @@
           </p>
           
           <div class="flex flex-col sm:flex-row gap-4">
-            <a href="https://discord.com/invite/BbxuwH5WS3" 
+            <a :href="socialLinks.discord.url" 
               target="_blank"
               rel="noopener noreferrer"
               class="btn btn-primary"
             >
-              <i class="fab fa-discord mr-2"></i>
+              <i :class="socialLinks.discord.icon + ' mr-2'"></i>
               Discordに参加
             </a>
             <NuxtLink 
@@ -68,18 +68,21 @@
                   <i class="fas fa-bullhorn mr-3"></i>
                   お知らせ
                 </h3>
-                <ul class="space-y-4">
-                  <li class="border-b border-white/20 pb-3">
-                    <span class="text-blue-200 block">24/12/26</span>
-                    <span>年末年始休業のお知らせ</span>
-                  </li>
-                  <li class="border-b border-white/20 pb-3">
-                    <span class="text-blue-200 block">25/1/1</span>
-                    <span>新年のご挨拶</span>
-                  </li>
-                  <li>
-                    <span class="text-blue-200 block">24/11/26</span>
-                    <span>ウェブサイトリニューアルのお知らせ</span>
+                <div v-if="isNewsLoading" class="flex justify-center my-6">
+                  <i class="fas fa-spinner fa-spin text-2xl text-white/70"></i>
+                </div>
+                <ul v-else class="space-y-4">
+                  <li v-for="news in latestNews" :key="news.id" class="border-b border-white/20 pb-3">
+                    <span class="text-blue-200 block">{{ formatDate(news.date || news.publishedAt) }}</span>
+                    <a 
+                      :href="`/newsdetail?id=${news.id}`"
+                      class="hover:text-blue-200 transition-colors"
+                    >
+                      {{ news.title }}
+                    </a>
+                    <span v-if="news.category" class="ml-2 text-xs px-2 py-0.5 rounded-full" :class="getCategoryClass(news.category.name)">
+                      {{ news.category.name }}
+                    </span>
                   </li>
                 </ul>
                 <div class="mt-6">
@@ -182,23 +185,15 @@
             </div>
           </div>
           
-          <!-- 右側：Twitter埋め込み（モバイルでは非表示） -->
+          <!-- 右側：X埋め込み（モバイルでは非表示） -->
           <div class="lg:col-span-2 hidden lg:block">
             <div class="card h-full overflow-hidden">
               <h3 class="text-xl font-bold mb-4 flex items-center">
                 <i class="fab fa-twitter text-[#5de8e8] mr-3"></i>
                 最新のツイート
               </h3>
-              <div class="twitter-embed-container">
-                <!-- Twitter埋め込みコード -->
-                <a 
-                  class="twitter-timeline" 
-                  data-height="500" 
-                  data-theme="light" 
-                  href="https://twitter.com/Web3studenttalk"
-                >
-                  Web3学生トークのツイート
-                </a>
+              <div class="twitter-embed-container" ref="twitterContainer">
+                <!-- この部分は動的に挿入されます -->
               </div>
             </div>
           </div>
@@ -219,20 +214,20 @@
           Web3の未来について、一緒に語り合いませんか？
         </p>
         <div class="flex flex-col sm:flex-row gap-6 justify-center">
-          <a href="https://discord.com/invite/BbxuwH5WS3" 
+          <a :href="socialLinks.discord.url" 
             target="_blank"
             rel="noopener noreferrer"
             class="btn btn-primary"
           >
-            <i class="fab fa-discord mr-2"></i>
+            <i :class="socialLinks.discord.icon + ' mr-2'"></i>
             Discordに参加
           </a>
-          <a href="https://twitter.com/Web3studenttalk" 
+          <a :href="socialLinks.twitter.url" 
             target="_blank"
             rel="noopener noreferrer"
             class="btn btn-outline text-gray-700"
           >
-            <i class="fab fa-twitter mr-2"></i>
+            <i :class="socialLinks.twitter.icon + ' mr-2'"></i>
             X（Twitter）をフォロー
           </a>
         </div>
@@ -241,74 +236,95 @@
   </div>
 </template>
 
-<script setup>
-import SectionTransition from '~/components/SectionTransition.vue'
-import { ref, onMounted, onBeforeUnmount } from 'vue'
+<script>
+import HeroBackground from '~/components/home/HeroBackground.vue';
+import SectionTransition from '~/components/common/SectionTransition.vue';
+import { SOCIAL_LINKS } from '~/utils/constants';
+import { useTypewriterAnimation } from '~/composables/useAnimation';
+import { formatDate, getCategoryClass } from '~/utils/helpers';
+import { getLatestNews } from '~/utils/cms';
 
-useHead({
-  title: 'Web3学生トーク - ホーム',
-  script: [
-    {
-      src: 'https://platform.twitter.com/widgets.js',
-      async: true,
-      defer: true
+export default {
+  components: {
+    HeroBackground,
+    SectionTransition
+  },
+  
+  setup() {
+    const { displayText } = useTypewriterAnimation();
+    
+    return {
+      displayText
+    };
+  },
+  
+  data() {
+    return {
+      socialLinks: SOCIAL_LINKS,
+      latestNews: [],
+      isNewsLoading: true,
+      twitterContainer: null
+    };
+  },
+  
+  methods: {
+    formatDate,
+    getCategoryClass,
+    
+    async fetchLatestNews() {
+      this.isNewsLoading = true;
+      try {
+        const response = await getLatestNews(3); // 最新3件を取得
+        this.latestNews = response.contents;
+      } catch (error) {
+        console.error('最新のお知らせの取得に失敗しました:', error);
+        this.latestNews = [];
+      } finally {
+        this.isNewsLoading = false;
+      }
+    },
+    
+    loadTwitterWidget() {
+      if (!this.$refs.twitterContainer) return;
+      
+      // 既存のウィジェットを削除
+      this.$refs.twitterContainer.innerHTML = '';
+      
+      // アンカータグを追加
+      const anchor = document.createElement('a');
+      anchor.className = 'twitter-timeline';
+      anchor.href = 'https://twitter.com/Web3studenttalk?ref_src=twsrc%5Etfw';
+      anchor.setAttribute('data-height', '500');
+      anchor.textContent = 'Tweets by Web3studenttalk';
+      this.$refs.twitterContainer.appendChild(anchor);
+      
+      // スクリプトタグを追加
+      const script = document.createElement('script');
+      script.async = true;
+      script.src = 'https://platform.twitter.com/widgets.js';
+      script.charset = 'utf-8';
+      this.$refs.twitterContainer.appendChild(script);
     }
-  ]
-})
-
-// タイプライターアニメーション用の変数
-const phrases = ['未来を創ろう', '課題を解決しよう', '可能性を広げよう', '価値を共有しよう'];
-const displayText = ref('');
-let currentPhrase = 0;
-let currentIndex = 0;
-let isDeleting = false;
-let timer = null;
-
-// タイプライターアニメーション関数
-const typeNextCharacter = () => {
-  const phrase = phrases[currentPhrase];
+  },
   
-  // 削除中か文字入力中かで処理を分岐
-  if (isDeleting) {
-    displayText.value = phrase.substring(0, currentIndex - 1);
-    currentIndex--;
-    timer = setTimeout(typeNextCharacter, 50); // 削除スピード
-  } else {
-    displayText.value = phrase.substring(0, currentIndex + 1);
-    currentIndex++;
-    timer = setTimeout(typeNextCharacter, 150); // 入力スピード
-  }
+  head() {
+    return {
+      title: 'Web3学生トーク - ホーム',
+      meta: [
+        { hid: 'description', name: 'description', content: 'Web3やメタバースについて気軽に話せるコミュニティサイト。定期的なXスペーストークや情報交換の場を提供しています。' },
+        { hid: 'og:title', property: 'og:title', content: 'Web3学生トーク - ホーム' },
+        { hid: 'og:description', property: 'og:description', content: 'Web3やメタバースについて気軽に話せるコミュニティサイト。定期的なXスペーストークや情報交換の場を提供しています。' },
+        { hid: 'og:type', property: 'og:type', content: 'website' },
+        { hid: 'og:url', property: 'og:url', content: 'https://www.web3student-talk.com/' }
+      ]
+    };
+  },
   
-  // 次のステップの条件分岐
-  if (!isDeleting && currentIndex === phrase.length) {
-    // 単語入力完了時、一時停止後に削除へ
-    isDeleting = true;
-    clearTimeout(timer);
-    timer = setTimeout(typeNextCharacter, 2000); // 単語表示後の待機時間
-  } else if (isDeleting && currentIndex === 0) {
-    // 削除完了時、次の単語へ
-    isDeleting = false;
-    currentPhrase = (currentPhrase + 1) % phrases.length;
-    clearTimeout(timer);
-    timer = setTimeout(typeNextCharacter, 500); // 次の単語開始前の待機時間
+  mounted() {
+    this.fetchLatestNews();
+    this.loadTwitterWidget();
   }
 };
-
-// コンポーネントマウント時の処理
-onMounted(() => {
-  // タイピングアニメーション開始
-  timer = setTimeout(typeNextCharacter, 1000);
-  
-  // Twitterウィジェットの読み込み
-  if (window.twttr) {
-    window.twttr.widgets.load();
-  }
-});
-
-// コンポーネントアンマウント時の処理
-onBeforeUnmount(() => {
-  if (timer) clearTimeout(timer);
-});
 </script>
 
 <style>
