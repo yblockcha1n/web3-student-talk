@@ -208,10 +208,14 @@
   import BaseCard from '~/components/ui/BaseCard.vue'
   import { SOCIAL_LINKS, FAQ_ITEMS } from '~/utils/constants'
   import { useFaqToggle } from '~/composables/useAnimation'
+  import { useOgp } from '~/utils/useOgp'
   
-  useHead({
-    title: 'Web3学生トーク - お問い合わせ'
-  })
+  // OGP設定
+  useOgp({
+    title: 'Web3学生トーク - お問い合わせ',
+    description: 'Web3学生トークへのお問い合わせ方法とよくある質問をご紹介しています。お気軽にご連絡ください。',
+    image: '/images/ogp/contact.svg',
+  });
   
   const socialLinks = SOCIAL_LINKS
   const faqItems = FAQ_ITEMS

@@ -243,6 +243,7 @@ import { SOCIAL_LINKS } from '~/utils/constants';
 import { useTypewriterAnimation } from '~/composables/useAnimation';
 import { formatDate, getCategoryClass } from '~/utils/helpers';
 import { getLatestNews } from '~/utils/cms';
+import { useOgp } from '~/utils/useOgp';
 
 export default {
   components: {
@@ -252,6 +253,13 @@ export default {
   
   setup() {
     const { displayText } = useTypewriterAnimation();
+    
+    // OGP設定
+    useOgp({
+      title: 'Web3学生トーク - ホーム',
+      description: 'Web3やメタバースについて気軽に話せるコミュニティサイト。定期的なXスペーストークや情報交換の場を提供しています。',
+      image: '/images/ogp/home.svg',
+    });
     
     return {
       displayText
@@ -307,18 +315,7 @@ export default {
     }
   },
   
-  head() {
-    return {
-      title: 'Web3学生トーク - ホーム',
-      meta: [
-        { hid: 'description', name: 'description', content: 'Web3やメタバースについて気軽に話せるコミュニティサイト。定期的なXスペーストークや情報交換の場を提供しています。' },
-        { hid: 'og:title', property: 'og:title', content: 'Web3学生トーク - ホーム' },
-        { hid: 'og:description', property: 'og:description', content: 'Web3やメタバースについて気軽に話せるコミュニティサイト。定期的なXスペーストークや情報交換の場を提供しています。' },
-        { hid: 'og:type', property: 'og:type', content: 'website' },
-        { hid: 'og:url', property: 'og:url', content: 'https://www.web3student-talk.com/' }
-      ]
-    };
-  },
+  // head()関数を削除（useOgpで代替）
   
   mounted() {
     this.fetchLatestNews();

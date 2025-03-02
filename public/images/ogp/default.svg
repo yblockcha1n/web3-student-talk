@@ -1,0 +1,89 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <!-- 背景グラデーション -->
+  <defs>
+    <linearGradient id="defaultBgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0f172a" />
+      <stop offset="100%" stop-color="#1e3a8a" />
+    </linearGradient>
+    
+    <linearGradient id="defaultAccentGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#5de8e8" />
+      <stop offset="100%" stop-color="#3b82f6" />
+    </linearGradient>
+    
+    <!-- Web3パターン表現（抽象的なブロックチェーン） -->
+    <pattern id="web3Pattern" x="0" y="0" width="200" height="200" patternUnits="userSpaceOnUse">
+      <rect x="0" y="0" width="50" height="50" fill="none" stroke="#5de8e8" stroke-width="1" opacity="0.1" />
+      <rect x="50" y="50" width="50" height="50" fill="none" stroke="#5de8e8" stroke-width="1" opacity="0.1" />
+      <rect x="100" y="100" width="50" height="50" fill="none" stroke="#5de8e8" stroke-width="1" opacity="0.1" />
+      <rect x="150" y="150" width="50" height="50" fill="none" stroke="#5de8e8" stroke-width="1" opacity="0.1" />
+      <line x1="25" y1="25" x2="75" y2="75" stroke="#5de8e8" stroke-width="1" opacity="0.1" />
+      <line x1="75" y1="75" x2="125" y2="125" stroke="#5de8e8" stroke-width="1" opacity="0.1" />
+      <line x1="125" y1="125" x2="175" y2="175" stroke="#5de8e8" stroke-width="1" opacity="0.1" />
+    </pattern>
+  </defs>
+  
+  <!-- 背景 -->
+  <rect width="1200" height="630" fill="url(#defaultBgGradient)" />
+  <rect width="1200" height="630" fill="url(#web3Pattern)" />
+  
+  <!-- 装飾要素 -->
+  <circle cx="200" cy="150" r="100" fill="white" opacity="0.05" />
+  <circle cx="1000" cy="500" r="150" fill="white" opacity="0.05" />
+  <circle cx="600" cy="100" r="50" fill="#5de8e8" opacity="0.1" />
+  
+  <!-- 中央の3Dブロックチェーン表現 -->
+  <g transform="translate(850, 315)">
+    <!-- 中央の大きなキューブ -->
+    <g transform="rotate(15)">
+      <rect x="-60" y="-60" width="120" height="120" fill="#5de8e8" opacity="0.8" />
+      <rect x="-70" y="-70" width="120" height="120" fill="#3b82f6" opacity="0.6" />
+      <rect x="-80" y="-80" width="120" height="120" fill="#5de8e8" opacity="0.4" />
+    </g>
+    
+    <!-- 接続された小さなキューブたち -->
+    <g transform="translate(-120, -80) rotate(30)">
+      <rect x="-25" y="-25" width="50" height="50" fill="#5de8e8" opacity="0.7" />
+    </g>
+    
+    <g transform="translate(120, -100) rotate(45)">
+      <rect x="-25" y="-25" width="50" height="50" fill="#3b82f6" opacity="0.7" />
+    </g>
+    
+    <g transform="translate(-80, 120) rotate(15)">
+      <rect x="-25" y="-25" width="50" height="50" fill="#3b82f6" opacity="0.7" />
+    </g>
+    
+    <g transform="translate(100, 80) rotate(60)">
+      <rect x="-25" y="-25" width="50" height="50" fill="#5de8e8" opacity="0.7" />
+    </g>
+    
+    <!-- 接続線 -->
+    <line x1="0" y1="0" x2="-120" y2="-80" stroke="#5de8e8" stroke-width="2" opacity="0.5" />
+    <line x1="0" y1="0" x2="120" y2="-100" stroke="#3b82f6" stroke-width="2" opacity="0.5" />
+    <line x1="0" y1="0" x2="-80" y2="120" stroke="#3b82f6" stroke-width="2" opacity="0.5" />
+    <line x1="0" y1="0" x2="100" y2="80" stroke="#5de8e8" stroke-width="2" opacity="0.5" />
+  </g>
+  
+  <!-- サイトタイトル -->
+  <g transform="translate(150, 250)">
+    <text font-family="'Noto Sans JP', sans-serif" font-size="72" font-weight="bold" fill="white">
+      <tspan x="0" y="0">Web3</tspan>
+      <tspan x="0" y="90" fill="#5de8e8">学生トーク</tspan>
+    </text>
+    
+    <text font-family="'Noto Sans JP', sans-serif" font-size="28" fill="#94a3b8" x="0" y="150">
+      Web3やメタバースについて気軽に話せるコミュニティ
+    </text>
+    
+    <!-- アクセントライン -->
+    <rect x="0" y="105" width="320" height="5" fill="url(#defaultAccentGradient)" rx="2" ry="2" />
+  </g>
+  
+  <!-- サイトURL -->
+  <g transform="translate(150, 430)">
+    <text font-family="'Noto Sans JP', sans-serif" font-size="22" fill="white" x="0" y="35">
+      www.web3student-talk.com
+    </text>
+  </g>
+</svg>

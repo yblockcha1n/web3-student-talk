@@ -243,10 +243,14 @@
   import TokenFeatures from '~/components/token/TokenFeatures.vue'
   import BaseCard from '~/components/ui/BaseCard.vue'
   import { SOCIAL_LINKS, TOKEN_LINKS } from '~/utils/constants'
+  import { useOgp } from '~/utils/useOgp'
   
-  useHead({
-    title: 'Web3学生トーク - Pizzaトークン'
-  })
+  // OGP設定
+  useOgp({
+    title: 'Web3学生トーク - Pizzaトークン',
+    description: 'Web3学生トークコミュニティの活動を活性化するコミュニティトークン「Pizza」の特徴や配布方法をご紹介します。',
+    image: '/images/ogp/token.svg',
+  });
   
   const socialLinks = SOCIAL_LINKS
   const tokenLinks = TOKEN_LINKS

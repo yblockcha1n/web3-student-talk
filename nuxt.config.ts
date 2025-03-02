@@ -7,10 +7,21 @@ export default defineNuxtConfig({
         { charset: 'utf-8' },
         { name: 'viewport', content: 'width=device-width, initial-scale=1' },
         { name: 'description', content: 'Web3やメタバースについて語り合うコミュニティ' },
-        { name: 'google-site-verification', content: 'chLtV5snUNUbS8oaftJI38hWeIP0OuYBm_k-Dhm_RcA' }
+        { name: 'google-site-verification', content: 'chLtV5snUNUbS8oaftJI38hWeIP0OuYBm_k-Dhm_RcA' },
+        
+        // デフォルトのOGP設定
+        { property: 'og:title', content: 'Web3学生トーク' },
+        { property: 'og:description', content: 'Web3やメタバースについて語り合うコミュニティ' },
+        { property: 'og:type', content: 'website' },
+        { property: 'og:image', content: '/images/ogp/default.svg' },
+        { property: 'og:site_name', content: 'Web3学生トーク' },
+        
+        // Twitter Card設定
+        { name: 'twitter:card', content: 'summary_large_image' },
+        { name: 'twitter:site', content: '@Web3studenttalk' },
       ],
       link: [
-        { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
+        { rel: 'icon', type: 'image/jpeg', href: '/favicon.jpg' }
       ],
     },
     pageTransition: {
@@ -36,22 +47,20 @@ export default defineNuxtConfig({
     },
   ],
 
-  // ルートルールの単純化
   routeRules: {
     '/_vercel/**': { proxy: '/_vercel/**' }
   },
 
-  // 本番環境のみでVercelAnalyticsを有効化
   experimental: {
     payloadExtraction: false
   },
 
-  // 環境変数でGoogleAnalyticsの測定IDを設定できるようにする
   runtimeConfig: {
     public: {
       googleAnalyticsId: process.env.GOOGLE_ANALYTICS_ID || '',
       microcmsServiceDomain: process.env.MICROCMS_SERVICE_DOMAIN || '',
       microcmsApiKey: process.env.MICROCMS_API_KEY || '',
+      siteUrl: process.env.SITE_URL || 'https://www.web3student-talk.com',
     }
   },
   

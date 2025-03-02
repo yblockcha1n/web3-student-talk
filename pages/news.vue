@@ -221,11 +221,21 @@ import BaseCard from '~/components/ui/BaseCard.vue';
 import { SOCIAL_LINKS } from '~/utils/constants';
 import { getCategoryClass, calculatePaginationRange, formatDate } from '~/utils/helpers';
 import { getNewsList, getCategoryList } from '~/utils/cms';
+import { useOgp } from '~/utils/useOgp';
 
 export default {
   components: {
     SectionTransition,
     BaseCard
+  },
+  
+  setup() {
+    // OGP設定
+    useOgp({
+      title: 'Web3学生トーク - お知らせ',
+      description: 'Web3学生トークの最新情報やイベント告知、アップデート情報などを掲載しています。',
+      image: '/images/ogp/news.svg',
+    });
   },
   
   data() {
@@ -288,7 +298,7 @@ export default {
     
     setFilter(filter) {
       this.activeFilter = filter;
-      this.updatePage(1); // フィルター変更時は1ページ目に戻る
+      this.updatePage(1);
       this.fetchNews();
     },
     
@@ -331,18 +341,7 @@ export default {
     }
   },
   
-  head() {
-    return {
-      title: 'Web3学生トーク - お知らせ',
-      meta: [
-        { hid: 'description', name: 'description', content: 'Web3学生トークの最新情報やイベント告知、アップデート情報などを掲載しています。'},
-        { hid: 'og:title', property: 'og:title', content: 'Web3学生トーク - お知らせ' },
-        { hid: 'og:description', property: 'og:description', content: 'Web3学生トークの最新情報やイベント告知、アップデート情報などを掲載しています。' },
-        { hid: 'og:type', property: 'og:type', content: 'website' },
-        { hid: 'og:url', property: 'og:url', content: 'https://www.web3student-talk.com/news' }
-      ]
-    };
-  },
+  // head()関数を削除（useOgpで代替）
   
   async mounted() {
     await this.fetchCategories();

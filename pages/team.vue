@@ -142,10 +142,14 @@
   import SectionTransition from '~/components/common/SectionTransition.vue'
   import TeamCard from '~/components/team/TeamCard.vue'
   import { SOCIAL_LINKS } from '~/utils/constants'
+  import { useOgp } from '~/utils/useOgp'
   
-  useHead({
-    title: 'Web3学生トーク - 運営メンバー'
-  })
+  // OGP設定
+  useOgp({
+    title: 'Web3学生トーク - 運営メンバー',
+    description: 'Web3学生トークコミュニティを支える中心メンバーのご紹介。Web3の未来を共に創るメンバーたち。',
+    image: '/images/ogp/team.svg',
+  });
   
   const socialLinks = SOCIAL_LINKS
   

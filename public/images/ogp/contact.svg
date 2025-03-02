@@ -1,0 +1,108 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <!-- 背景グラデーション -->
+  <defs>
+    <linearGradient id="contactBgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1e40af" />
+      <stop offset="100%" stop-color="#1e3a8a" />
+    </linearGradient>
+    
+    <linearGradient id="contactAccentGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#5de8e8" />
+      <stop offset="100%" stop-color="#3b82f6" />
+    </linearGradient>
+    
+    <!-- 接続ポイントのパターン -->
+    <pattern id="contactPattern" x="0" y="0" width="200" height="200" patternUnits="userSpaceOnUse">
+      <circle cx="0" cy="0" r="3" fill="white" opacity="0.1" />
+      <circle cx="50" cy="0" r="3" fill="white" opacity="0.1" />
+      <circle cx="100" cy="0" r="3" fill="white" opacity="0.1" />
+      <circle cx="150" cy="0" r="3" fill="white" opacity="0.1" />
+      <circle cx="200" cy="0" r="3" fill="white" opacity="0.1" />
+      
+      <circle cx="0" cy="50" r="3" fill="white" opacity="0.1" />
+      <circle cx="50" cy="50" r="3" fill="white" opacity="0.1" />
+      <circle cx="100" cy="50" r="3" fill="white" opacity="0.1" />
+      <circle cx="150" cy="50" r="3" fill="white" opacity="0.1" />
+      <circle cx="200" cy="50" r="3" fill="white" opacity="0.1" />
+      
+      <circle cx="0" cy="100" r="3" fill="white" opacity="0.1" />
+      <circle cx="50" cy="100" r="3" fill="white" opacity="0.1" />
+      <circle cx="100" cy="100" r="3" fill="white" opacity="0.1" />
+      <circle cx="150" cy="100" r="3" fill="white" opacity="0.1" />
+      <circle cx="200" cy="100" r="3" fill="white" opacity="0.1" />
+      
+      <circle cx="0" cy="150" r="3" fill="white" opacity="0.1" />
+      <circle cx="50" cy="150" r="3" fill="white" opacity="0.1" />
+      <circle cx="100" cy="150" r="3" fill="white" opacity="0.1" />
+      <circle cx="150" cy="150" r="3" fill="white" opacity="0.1" />
+      <circle cx="200" cy="150" r="3" fill="white" opacity="0.1" />
+      
+      <circle cx="0" cy="200" r="3" fill="white" opacity="0.1" />
+      <circle cx="50" cy="200" r="3" fill="white" opacity="0.1" />
+      <circle cx="100" cy="200" r="3" fill="white" opacity="0.1" />
+      <circle cx="150" cy="200" r="3" fill="white" opacity="0.1" />
+      <circle cx="200" cy="200" r="3" fill="white" opacity="0.1" />
+    </pattern>
+  </defs>
+  
+  <!-- 背景 -->
+  <rect width="1200" height="630" fill="url(#contactBgGradient)" />
+  <rect width="1200" height="630" fill="url(#contactPattern)" />
+  
+  <!-- 装飾要素 -->
+  <circle cx="150" cy="150" r="100" fill="white" opacity="0.05" />
+  <circle cx="1050" cy="450" r="180" fill="white" opacity="0.05" />
+  
+  <!-- コンタクトイメージ表現 -->
+  <g transform="translate(850, 315)">
+    <!-- メッセージアイコン表現 -->
+    <rect x="-110" y="-80" width="220" height="160" rx="20" ry="20" fill="white" />
+    <path d="M-110,0 L-60,-50 M110,0 L60,-50" stroke="#e2e8f0" stroke-width="4" />
+    <rect x="-110" y="0" width="220" height="10" rx="5" ry="5" fill="#e2e8f0" />
+    
+    <!-- 手紙の中身 -->
+    <rect x="-80" y="-60" width="160" height="10" rx="5" ry="5" fill="#94a3b8" opacity="0.5" />
+    <rect x="-80" y="-40" width="120" height="10" rx="5" ry="5" fill="#94a3b8" opacity="0.5" />
+    <rect x="-80" y="-20" width="160" height="10" rx="5" ry="5" fill="#94a3b8" opacity="0.5" />
+    
+    <!-- Discord, Twitter, noteのアイコン表現 -->
+    <g transform="translate(0, 60)">
+      <circle cx="-70" cy="0" r="25" fill="#5865f2" />
+      <path d="M-70,-10 C-76,-10 -81,-5 -81,0 C-81,5 -76,10 -70,10 C-64,10 -59,5 -59,0 C-59,-5 -64,-10 -70,-10 Z M-76,-2 C-77,-2 -78,-1 -78,0 C-78,1 -77,2 -76,2 C-75,2 -74,1 -74,0 C-74,-1 -75,-2 -76,-2 Z M-64,-2 C-65,-2 -66,-1 -66,0 C-66,1 -65,2 -64,2 C-63,2 -62,1 -62,0 C-62,-1 -63,-2 -64,-2 Z" fill="white" />
+      
+      <circle cx="0" cy="0" r="25" fill="#1da1f2" />
+      <path d="M10,-5 C10,-7.5 8,-9.5 5.5,-9.5 C3,-9.5 1,-7.5 1,-5 C1,-4.8 1,-4.6 1,-4.4 C-1.6,-4.2 -4,-2.2 -5,-0.2 C-5.8,0.6 -5.8,2 -5,2.8 C-4.6,3.2 -4,3.4 -3.5,3.4 L3.8,3.4 C5.4,3.4 6.8,2 6.8,0.4 C6.8,0 6.6,-0.4 6.4,-0.8 C6.8,-1.6 7,-2.6 7,-3.4 L10,-4.4 L10,-5 Z" fill="white" transform="translate(-5, 0)" />
+      
+      <circle cx="70" cy="0" r="25" fill="black" />
+      <text font-family="'Noto Sans JP', sans-serif" font-size="22" font-weight="bold" fill="white" x="62" y="7">n</text>
+    </g>
+  </g>
+  
+  <!-- タイトルのバックグラウンド -->
+  <rect x="100" y="180" width="600" height="280" rx="20" ry="20" fill="black" opacity="0.2" />
+  
+  <!-- サイトタイトル -->
+  <g transform="translate(150, 250)">
+    <text font-family="'Noto Sans JP', sans-serif" font-size="42" font-weight="bold" fill="white">
+      <tspan x="0" y="0">Web3学生トーク</tspan>
+    </text>
+    
+    <text font-family="'Noto Sans JP', sans-serif" font-size="64" font-weight="bold" fill="white">
+      <tspan x="0" y="90">お問い合わせ</tspan>
+    </text>
+    
+    <text font-family="'Noto Sans JP', sans-serif" font-size="28" fill="white" x="0" y="150">
+      お気軽にご連絡ください
+    </text>
+    
+    <!-- アクセントライン -->
+    <rect x="0" y="105" width="320" height="5" fill="url(#contactAccentGradient)" rx="2" ry="2" />
+  </g>
+  
+  <!-- サイトURL -->
+  <g transform="translate(150, 430)">
+    <text font-family="'Noto Sans JP', sans-serif" font-size="22" fill="white" x="0" y="35">
+      www.web3student-talk.com/contact
+    </text>
+  </g>
+</svg>

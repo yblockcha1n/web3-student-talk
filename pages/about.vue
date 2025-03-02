@@ -243,10 +243,14 @@
   import SectionTransition from '~/components/common/SectionTransition.vue'
   import AboutFeatures from '~/components/about/AboutFeatures.vue'
   import { SOCIAL_LINKS } from '~/utils/constants'
+  import { useOgp } from '~/utils/useOgp'
   
-  useHead({
-    title: 'Web3学生トーク - コミュニティについて'
-  })
+  // OGP設定
+  useOgp({
+    title: 'Web3学生トーク - コミュニティについて',
+    description: 'Web3とメタバースに興味を持つ学生や若手社会人が気軽に交流できるコミュニティ「Web3学生トーク」の活動内容や参加方法をご紹介します。',
+    image: '/images/ogp/about.svg', // aboutページ用のOGP画像
+  });
   
   const socialLinks = SOCIAL_LINKS
   
@@ -254,7 +258,7 @@
   const activityFeatures = [
     {
       title: '定期的なXスペーストーク',
-      description: '毎週火・木・金曜日に開催されるXスペースでは、以下のようなテーマについて語り合っています：',
+      description: '毎週火・木・金曜日に開催されるXスペースでは、以下のようなテーマについて語り合っています:',
       icon: 'fas fa-microphone',
       iconBgClass: 'bg-blue-100',
       iconColorClass: 'text-blue-600',
@@ -268,7 +272,7 @@
     },
     {
       title: 'Discordコミュニティ',
-      description: 'Discordサーバーでは、以下のような活動を行っています：',
+      description: 'Discordサーバーでは、以下のような活動を行っています:',
       icon: 'fab fa-discord',
       iconBgClass: 'bg-indigo-100',
       iconColorClass: 'text-indigo-600',
@@ -281,7 +285,7 @@
     },
     {
       title: 'コミュニティトークン「Pizza」',
-      description: 'TIPWAVEプラットフォームを利用して発行された独自のコミュニティトークン「Pizza」は、以下のような特徴があります：',
+      description: 'TIPWAVEプラットフォームを利用して発行された独自のコミュニティトークン「Pizza」は、以下のような特徴があります:',
       icon: 'fas fa-pizza-slice',
       iconBgClass: 'bg-yellow-100',
       iconColorClass: 'text-yellow-600',
