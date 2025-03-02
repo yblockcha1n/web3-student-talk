@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+
+# サイトマップへのリンク
+Sitemap: https://web3student-talk.com/sitemap.xml

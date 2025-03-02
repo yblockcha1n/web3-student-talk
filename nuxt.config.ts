@@ -33,7 +33,21 @@ export default defineNuxtConfig({
   modules: [
     '@nuxtjs/tailwindcss',
     '@pinia/nuxt',
-    '@vueuse/nuxt'
+    '@vueuse/nuxt',
+    ['@nuxt/image', {
+      // 画像の最適化設定
+      provider: 'ipx',
+      quality: 80,
+      format: ['webp', 'jpg', 'png'],
+      screens: {
+        xs: 320,
+        sm: 640,
+        md: 768,
+        lg: 1024,
+        xl: 1280,
+        xxl: 1536,
+      },
+    }]
   ],
 
   css: [
@@ -48,11 +62,19 @@ export default defineNuxtConfig({
   ],
 
   routeRules: {
-    '/_vercel/**': { proxy: '/_vercel/**' }
+    '/_vercel/**': { proxy: '/_vercel/**' },
+    // SEO用のルールを追加
+    '/': { prerender: true },
+    '/about': { prerender: true },
+    '/team': { prerender: true },
+    '/token': { prerender: true },
+    '/contact': { prerender: true },
+    '/news': { prerender: true }
   },
 
   experimental: {
-    payloadExtraction: false
+    payloadExtraction: false,
+    viewTransition: true,
   },
 
   runtimeConfig: {
@@ -60,7 +82,7 @@ export default defineNuxtConfig({
       googleAnalyticsId: process.env.GOOGLE_ANALYTICS_ID || '',
       microcmsServiceDomain: process.env.MICROCMS_SERVICE_DOMAIN || '',
       microcmsApiKey: process.env.MICROCMS_API_KEY || '',
-      siteUrl: process.env.SITE_URL || 'https://www.web3student-talk.com',
+      siteUrl: process.env.SITE_URL || 'https://web3student-talk.com',
     }
   },
   
