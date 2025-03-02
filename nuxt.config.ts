@@ -34,19 +34,18 @@ export default defineNuxtConfig({
     '@nuxtjs/tailwindcss',
     '@pinia/nuxt',
     '@vueuse/nuxt',
-    ['@nuxt/image', {
-      // 画像の最適化設定
-      provider: 'ipx',
-      quality: 80,
-      format: ['webp', 'jpg', 'png'],
-      screens: {
-        xs: 320,
-        sm: 640,
-        md: 768,
-        lg: 1024,
-        xl: 1280,
-        xxl: 1536,
-      },
+    ['@nuxtjs/sitemap', {
+      siteUrl: 'https://www.web3student-talk.com',
+      generateOnBuild: true,
+      exclude: ['/_vercel/**'],
+      routes: [
+        '/',
+        '/about',
+        '/team',
+        '/token',
+        '/news',
+        '/contact'
+      ]
     }]
   ],
 
@@ -63,7 +62,6 @@ export default defineNuxtConfig({
 
   routeRules: {
     '/_vercel/**': { proxy: '/_vercel/**' },
-    // SEO用のルールを追加
     '/': { prerender: true },
     '/about': { prerender: true },
     '/team': { prerender: true },
@@ -73,8 +71,7 @@ export default defineNuxtConfig({
   },
 
   experimental: {
-    payloadExtraction: false,
-    viewTransition: true,
+    payloadExtraction: false
   },
 
   runtimeConfig: {
