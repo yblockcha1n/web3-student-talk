@@ -13,7 +13,7 @@ export default defineNuxtConfig({
         { property: 'og:title', content: 'Web3学生トーク' },
         { property: 'og:description', content: 'Web3やメタバースについて語り合うコミュニティ' },
         { property: 'og:type', content: 'website' },
-        { property: 'og:image', content: '/images/ogp/default.svg' },
+        { property: 'og:image', content: '/images/ogp/default.png' },
         { property: 'og:site_name', content: 'Web3学生トーク' },
         
         // Twitter Card設定

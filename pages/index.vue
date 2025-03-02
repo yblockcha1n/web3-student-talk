@@ -258,7 +258,7 @@ export default {
     useOgp({
       title: 'Web3学生トーク - ホーム',
       description: 'Web3やメタバースについて気軽に話せるコミュニティサイト。定期的なXスペーストークや情報交換の場を提供しています。',
-      image: '/images/ogp/home.svg',
+      image: '/images/ogp/home.png',
     });
     
     return {

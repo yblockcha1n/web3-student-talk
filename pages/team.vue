@@ -148,7 +148,7 @@
   useOgp({
     title: 'Web3学生トーク - 運営メンバー',
     description: 'Web3学生トークコミュニティを支える中心メンバーのご紹介。Web3の未来を共に創るメンバーたち。',
-    image: '/images/ogp/team.svg',
+    image: '/images/ogp/team.png',
   });
   
   const socialLinks = SOCIAL_LINKS

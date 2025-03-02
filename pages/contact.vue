@@ -214,7 +214,7 @@
   useOgp({
     title: 'Web3学生トーク - お問い合わせ',
     description: 'Web3学生トークへのお問い合わせ方法とよくある質問をご紹介しています。お気軽にご連絡ください。',
-    image: '/images/ogp/contact.svg',
+    image: '/images/ogp/contact.png',
   });
   
   const socialLinks = SOCIAL_LINKS

@@ -249,7 +249,7 @@
   useOgp({
     title: 'Web3学生トーク - Pizzaトークン',
     description: 'Web3学生トークコミュニティの活動を活性化するコミュニティトークン「Pizza」の特徴や配布方法をご紹介します。',
-    image: '/images/ogp/token.svg',
+    image: '/images/ogp/token.png',
   });
   
   const socialLinks = SOCIAL_LINKS

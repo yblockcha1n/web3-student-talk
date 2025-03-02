@@ -289,7 +289,7 @@ export default {
       useOgp({
         title: `${newsItem.title} - Web3学生トーク`,
         description: description,
-        image: '/images/ogp/news.svg', // ニュース用のデフォルトOGP画像
+        image: '/images/ogp/news.png', // ニュース用のデフォルトOGP画像
         type: 'article'
       });
       

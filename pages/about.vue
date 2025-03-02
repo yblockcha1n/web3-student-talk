@@ -249,7 +249,7 @@
   useOgp({
     title: 'Web3学生トーク - コミュニティについて',
     description: 'Web3とメタバースに興味を持つ学生や若手社会人が気軽に交流できるコミュニティ「Web3学生トーク」の活動内容や参加方法をご紹介します。',
-    image: '/images/ogp/about.svg', // aboutページ用のOGP画像
+    image: '/images/ogp/about.png',
   });
   
   const socialLinks = SOCIAL_LINKS

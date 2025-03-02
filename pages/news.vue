@@ -234,7 +234,7 @@ export default {
     useOgp({
       title: 'Web3学生トーク - お知らせ',
       description: 'Web3学生トークの最新情報やイベント告知、アップデート情報などを掲載しています。',
-      image: '/images/ogp/news.svg',
+      image: '/images/ogp/news.png',
     });
   },
   

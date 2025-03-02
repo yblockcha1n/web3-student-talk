@@ -1,5 +1,3 @@
-// utils/useOgp.ts - OGP設定用のコンポーザブル関数を作成
-
 /**
  * OGP設定用のコンポーザブル関数
  * 
@@ -10,28 +8,18 @@ export const useOgp = (options = {}) => {
     const route = useRoute();
     const config = useRuntimeConfig();
     
-    // デフォルト設定
     const defaults = {
-      // サイトのベースURL - 環境変数から取得するか、デフォルト値を使用
       baseUrl: config.public.siteUrl || 'https://www.web3student-talk.com',
-      // サイト名
       siteName: 'Web3学生トーク',
-      // デフォルトタイトル
       title: 'Web3学生トーク',
-      // デフォルト説明文
       description: 'Web3やメタバースについて気軽に話せるコミュニティ',
-      // デフォルト画像パス（publicフォルダからの相対パス）
-      image: '/images/ogp/default.svg',
-      // デフォルトのTwitterカードタイプ
+      image: '/images/ogp/default.png',
       twitterCard: 'summary_large_image',
-      // TwitterアカウントID
       twitterSite: '@Web3studenttalk',
     };
     
-    // オプションとデフォルト値をマージ
     const settings = { ...defaults, ...options };
     
-    // 現在のURLを生成（相対パスからフルURLに変換）
     const url = `${settings.baseUrl}${route.fullPath}`;
     
     // 画像URLを生成（相対パスからフルURLに変換）
